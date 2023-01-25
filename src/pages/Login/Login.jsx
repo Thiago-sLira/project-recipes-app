@@ -22,7 +22,7 @@ function Login() {
     const emailRegex = /^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm;
     const verifyEmailInput = emailRegex.test(loginInputs.email);
 
-    const verifyPasswordInput = loginInputs.password.length >= SIX;
+    const verifyPasswordInput = loginInputs.password.length > SIX;
 
     if (verifyEmailInput && verifyPasswordInput) {
       setLoginInputs({ ...loginInputs, isDisabled: false });
