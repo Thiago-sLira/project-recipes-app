@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function useFetch() {
+export default function useFetchMeal() {
   const [dados, setDados] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState(null);
@@ -27,4 +27,3 @@ export default function useFetch() {
 
   return { dados, loading, errors, fetchApi };
 }
-
