@@ -1,11 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { saveLocalStorage } from '../../localStorage/localStorage';
 
 const SIX = 6;
 function Login() {
   const [loginInputs, setLoginInputs] = useState({
     email: '', password: '',
   });
+
+  const history = useHistory();
 
   const handleChange = ({ target: { name, value } }) => {
     setLoginInputs({
@@ -25,6 +29,11 @@ function Login() {
     } else {
       setLoginInputs({ ...loginInputs, isDisabled: true });
     }
+  };
+
+  const handleClick = () => {
+    saveLocalStorage('user', { email: loginInputs.email });
+    history.push('/meals');
   };
 
   useEffect(() => {
@@ -57,6 +66,7 @@ function Login() {
           data-testid="login-submit-btn"
           type="button"
           disabled={ loginInputs.isDisabled }
+          onClick={ handleClick }
         >
           Login
         </button>
