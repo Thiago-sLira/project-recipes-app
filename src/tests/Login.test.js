@@ -2,7 +2,7 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
-import renderWithRouter from './renderWithRouter';
+import renderWithRouter from './helpers/renderWithRouter';
 
 const EMAIL_TEST = 'NAME@EXAMPLE.COM';
 const PASSWORD_TEST = '1234567';
