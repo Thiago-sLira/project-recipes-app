@@ -27,7 +27,6 @@ function Header({ mainPage, title }) {
       <h1 data-testid="page-title">
         {title }
       </h1>
-
       <Button
         type="button"
         data-testid="profile-top-btn"
@@ -37,7 +36,6 @@ function Header({ mainPage, title }) {
       >
         <img src={ profileIcon } alt="profileIcon" />
       </Button>
-
       { mainPage && (
         <Button
           type="button"

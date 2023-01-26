@@ -24,6 +24,7 @@ function SearchBar() {
             name="searchInput"
             value={ searchField.searchInput }
             onChange={ handleChange }
+            placeholder="Digite aqui"
           />
         </label>
       </section>
