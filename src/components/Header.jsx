@@ -1,14 +1,35 @@
 import Button from 'react-bootstrap/Button';
-import React from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
 
 function Header({ mainPage, title }) {
+  const [searchField, setSearchField] = useState({
+    showField: false,
+    searchInput: '',
+    radioValue: '',
+  });
+
   const history = useHistory();
 
-  const handleClick = () => {
+  const handleChange = ({ target: { name, value } }) => {
+    setSearchField({
+      ...searchField,
+      [name]: value,
+    });
+  };
+
+  const handleProfileClick = () => {
     history.push('/profile');
+  };
+
+  const handleSearchClick = () => {
+    if (searchField.showField) {
+      setSearchField({ ...searchField, showField: false });
+    } else {
+      setSearchField({ ...searchField, showField: true });
+    }
   };
 
   return (
@@ -22,7 +43,7 @@ function Header({ mainPage, title }) {
         data-testid="profile-top-btn"
         className="profileButton"
         src={ profileIcon }
-        onClick={ handleClick }
+        onClick={ handleProfileClick }
       >
         <img src={ profileIcon } alt="profileIcon" />
       </Button>
@@ -33,9 +54,24 @@ function Header({ mainPage, title }) {
           data-testid="search-top-btn"
           className="profileButton"
           src={ searchIcon }
+          onClick={ handleSearchClick }
         >
           <img src={ searchIcon } alt="profileIcon" />
         </Button>
+      )}
+      { searchField.showField && (
+        <section>
+          <label htmlFor="input-search">
+            <input
+              data-testid="search-input"
+              type="text"
+              id="input-search"
+              name="searchInput"
+              value={ searchField.searchInput }
+              onChange={ handleChange }
+            />
+          </label>
+        </section>
       )}
     </div>
   );
