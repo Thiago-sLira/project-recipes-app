@@ -26,7 +26,7 @@ function Routes() {
       />
       <Route
         exact
-        path="/meals/:id-da-receita"
+        path="/meals/:id"
         component={ MealsDetails }
       />
       <Route

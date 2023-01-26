@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import RecipesContext from '../context/RecipesContext';
 // import Button from 'react-bootstrap/Button';
@@ -9,7 +9,7 @@ function SearchBar() {
     radioValue: '',
   });
   const {
-    handleMealsRequisition, handleDrinksRequisition, dados,
+    handleMealsRequisition, handleDrinksRequisition,
   } = useContext(RecipesContext);
 
   const history = useHistory();
@@ -29,13 +29,17 @@ function SearchBar() {
     }
   };
 
-  useEffect(() => {
-    const actualRoute = history.location.pathname.replace('/', '');
-    if (dados[actualRoute] === 1) {
-      history.push(`/${actualRoute}/:idDrink`);
-    }
-    console.log(dados);
-  }, [dados]);
+  // const testingRoute = () => {
+  // const actualRoute = history.location.pathname.replace('/', '');
+  // // history.push(`/meals/:${dados.meals[0].idDrink.replace('id', '')}`);
+  // if (dados[actualRoute] === 1) {
+  // }
+  // };
+
+  // useEffect(() => {
+  //   testingRoute();
+  //   console.log(dados);
+  // }, [dados]);
 
   return (
 
