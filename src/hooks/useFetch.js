@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 export default function useFetch() {
-  const [dados, setDados] = useState([]);
+  const [dados, setDados] = useState({});
   const [errors, setErrors] = useState(null);
 
   const fetchApi = async (link) => {
