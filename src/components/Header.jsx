@@ -3,32 +3,22 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import profileIcon from '../images/profileIcon.svg';
 import searchIcon from '../images/searchIcon.svg';
+import SearchBar from './SearchBar';
 
 function Header({ mainPage, title }) {
-  const [searchField, setSearchField] = useState({
-    showField: false,
-    searchInput: '',
-    radioValue: '',
-  });
+  const [showSearchField, setShowSearchField] = useState(false);
 
   const history = useHistory();
-
-  const handleChange = ({ target: { name, value } }) => {
-    setSearchField({
-      ...searchField,
-      [name]: value,
-    });
-  };
 
   const handleProfileClick = () => {
     history.push('/profile');
   };
 
   const handleSearchClick = () => {
-    if (searchField.showField) {
-      setSearchField({ ...searchField, showField: false });
+    if (showSearchField) {
+      setShowSearchField(false);
     } else {
-      setSearchField({ ...searchField, showField: true });
+      setShowSearchField(true);
     }
   };
 
@@ -37,7 +27,6 @@ function Header({ mainPage, title }) {
       <h1 data-testid="page-title">
         {title }
       </h1>
-
       <Button
         type="button"
         data-testid="profile-top-btn"
@@ -47,7 +36,6 @@ function Header({ mainPage, title }) {
       >
         <img src={ profileIcon } alt="profileIcon" />
       </Button>
-
       { mainPage && (
         <Button
           type="button"
@@ -59,19 +47,8 @@ function Header({ mainPage, title }) {
           <img src={ searchIcon } alt="profileIcon" />
         </Button>
       )}
-      { searchField.showField && (
-        <section>
-          <label htmlFor="input-search">
-            <input
-              data-testid="search-input"
-              type="text"
-              id="input-search"
-              name="searchInput"
-              value={ searchField.searchInput }
-              onChange={ handleChange }
-            />
-          </label>
-        </section>
+      { showSearchField && (
+        <SearchBar />
       )}
     </div>
   );
