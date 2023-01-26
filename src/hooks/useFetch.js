@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function useFetchMeal() {
+export default function useFetch() {
   const [dados, setDados] = useState([]);
   const [errors, setErrors] = useState(null);
 

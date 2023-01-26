@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import RecipesContext from '../context/RecipesContext';
 // import Button from 'react-bootstrap/Button';
 
@@ -7,13 +8,23 @@ function SearchBar() {
     searchInput: '',
     radioValue: '',
   });
-  const { handleSearchClick } = useContext(RecipesContext);
+  const { handleMealsRequisition, handleDrinksRequisition } = useContext(RecipesContext);
+
+  const history = useHistory();
 
   const handleChange = ({ target: { name, value } }) => {
     setSearchField({
       ...searchField,
       [name]: value,
     });
+  };
+
+  const handleSearchClick = () => {
+    if (history.location.pathname === '/meals') {
+      handleMealsRequisition(searchField);
+    } else {
+      handleDrinksRequisition(searchField);
+    }
   };
 
   return (
@@ -67,7 +78,7 @@ function SearchBar() {
         <button
           type="button"
           data-testid="exec-search-btn"
-          onClick={ () => handleSearchClick(searchField) }
+          onClick={ handleSearchClick }
         >
           Search
         </button>
