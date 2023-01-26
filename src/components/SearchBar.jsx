@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import RecipesContext from '../context/RecipesContext';
+// import Button from 'react-bootstrap/Button';
 
 function SearchBar() {
   const [searchField, setSearchField] = useState({
     searchInput: '',
     radioValue: '',
   });
+  const { handleSearchClick } = useContext(RecipesContext);
 
   const handleChange = ({ target: { name, value } }) => {
     setSearchField({
@@ -14,19 +17,60 @@ function SearchBar() {
   };
 
   return (
+
     <div>
       <section>
         <label htmlFor="input-search">
           <input
             data-testid="search-input"
             type="text"
-            id="input-search"
             name="searchInput"
+            id="input-search"
             value={ searchField.searchInput }
             onChange={ handleChange }
             placeholder="Digite aqui"
           />
         </label>
+        <label htmlFor="radio-ingredient">
+          Ingredient
+          <input
+            type="radio"
+            name="radioValue"
+            id="radio-ingredient"
+            data-testid="ingredient-search-radio"
+            value="Ingredient"
+            onChange={ handleChange }
+          />
+          <label htmlFor="radio-name">
+            Name
+            <input
+              type="radio"
+              name="radioValue"
+              id="radio-name"
+              data-testid="name-search-radio"
+              value="Name"
+              onChange={ handleChange }
+            />
+          </label>
+          <label htmlFor="radio-first-letter">
+            First letter
+            <input
+              type="radio"
+              name="radioValue"
+              id="radio-first-letter"
+              data-testid="first-letter-search-radio"
+              value="First-letter"
+              onChange={ handleChange }
+            />
+          </label>
+        </label>
+        <button
+          type="button"
+          data-testid="exec-search-btn"
+          onClick={ () => handleSearchClick(searchField) }
+        >
+          Search
+        </button>
       </section>
     </div>
   );
