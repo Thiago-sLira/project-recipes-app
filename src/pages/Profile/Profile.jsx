@@ -1,11 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { getLocalStorage } from '../../localStorage/localStorage';
+// import { getLocalStorageEmail } from '../../localStorage/localStorage';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 function Profile() {
-  const getEmailLocalStorage = getLocalStorage('user');
+  // const getEmailLocalStorage = getLocalStorageEmail('user');
 
   const history = useHistory();
 
@@ -17,7 +17,11 @@ function Profile() {
   return (
     <div>
       <Header mainPage={ false } title="Profile" />
-      <h1 data-testid="profile-email">{getEmailLocalStorage.email}</h1>
+      <h1
+        data-testid="profile-email"
+      >
+        {/* {getEmailLocalStorage.email ? getEmailLocalStorage.email : 'Logue com um email' } */}
+      </h1>
       <section>
         <button
           type="button"
