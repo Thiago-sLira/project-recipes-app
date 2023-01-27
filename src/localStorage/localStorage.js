@@ -9,3 +9,11 @@ export const getLocalStorage = (key) => {
     return JSON.parse(localStorage.getItem(key));
   }
 };
+
+export const getLocalStorageEmail = (key) => {
+  if (!JSON.parse(localStorage.getItem(key))) {
+    localStorage.setItem(key, JSON.stringify({ email }));
+  } else {
+    return JSON.parse(localStorage.getItem(key));
+  }
+};

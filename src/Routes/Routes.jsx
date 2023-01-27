@@ -41,7 +41,8 @@ function Routes() {
       />
       <Route
         exact
-        path="/drinks/:id-da-receita"
+        // path="/drinks/:id-da-receita"
+        path="/drinks/:id"
         component={ DrinksDetails }
       />
       <Route

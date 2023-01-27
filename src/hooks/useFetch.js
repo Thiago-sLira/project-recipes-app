@@ -8,8 +8,8 @@ export default function useFetch() {
     try {
       const data = await fetch(`${link}`);
       const json = await data.json();
-      console.log(json);
       setDados(json);
+      // console.log(json);
     } catch (error) {
       setErrors(error);
     }

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import RecipesContext from '../context/RecipesContext';
 // import Button from 'react-bootstrap/Button';
@@ -8,6 +8,7 @@ function SearchBar() {
     searchInput: '',
     radioValue: '',
   });
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const {
     handleMealsRequisition, handleDrinksRequisition,
   } = useContext(RecipesContext);
@@ -29,17 +30,13 @@ function SearchBar() {
     }
   };
 
-  // const testingRoute = () => {
-  // const actualRoute = history.location.pathname.replace('/', '');
-  // // history.push(`/meals/:${dados.meals[0].idDrink.replace('id', '')}`);
-  // if (dados[actualRoute] === 1) {
-  // }
-  // };
-
-  // useEffect(() => {
-  //   testingRoute();
-  //   console.log(dados);
-  // }, [dados]);
+  useEffect(() => {
+    if (searchField.searchInput.length > 0 && searchField.radioValue.length > 0) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [searchField.searchInput, searchField.radioValue]);
 
   return (
 
@@ -93,6 +90,7 @@ function SearchBar() {
           type="button"
           data-testid="exec-search-btn"
           onClick={ handleSearchClick }
+          disabled={ isButtonDisabled }
         >
           Search
         </button>
