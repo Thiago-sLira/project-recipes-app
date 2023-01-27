@@ -5,21 +5,25 @@ import renderWithRouter from './helpers/renderWithRouter';
 import Profile from '../pages/Profile/Profile';
 
 const EMAIL_TEST = 'NAME@EXAMPLE.COM';
-const PASSWORD_TEST = '1234567';
 
-describe('Testa a página Profile', () => {
+describe('2-Testa a página Profile', () => {
   test('Testa inputs de login ', () => {
     renderWithRouter(<Profile />);
 
     const emailInput = screen.getByTestId('email-input');
     userEvent.type(emailInput, EMAIL_TEST);
     expect(emailInput).toHaveValue(EMAIL_TEST);
+  });
+  test('2-Testa botões', () => {
+    renderWithRouter(<Profile />);
 
-    const passwordInput = screen.getByTestId('password-input');
-    userEvent.type(passwordInput, PASSWORD_TEST);
-    expect(passwordInput).toHaveValue(PASSWORD_TEST);
+    const doneBtn = screen.getByTestId('profile-done-btn');
+    expect(doneBtn).toBeInTheDocument();
 
-    const loginBtn = screen.getByRole('button', { name: /login/i });
-    userEvent.click(loginBtn);
+    const favoriteBtn = screen.getByTestId('profile-favorite-btn');
+    expect(favoriteBtn).toBeInTheDocument();
+
+    const logoutBtn = screen.getByTestId('profile-logout-btn');
+    expect(logoutBtn).toBeInTheDocument();
   });
 });
