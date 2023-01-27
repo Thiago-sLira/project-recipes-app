@@ -20,7 +20,7 @@ function Profile() {
       <h1
         data-testid="profile-email"
       >
-        {/* {getEmailLocalStorage.email ? getEmailLocalStorage.email : 'Logue com um email' } */}
+        {getEmailLocalStorage.email ? getEmailLocalStorage.email : 'Logue com um email' }
       </h1>
       <section>
         <button
