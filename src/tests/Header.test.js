@@ -5,6 +5,10 @@ import App from '../App';
 import renderWithRouter from './helpers/renderWithRouter';
 
 describe('Testes para o Header', () => {
+  beforeEach(() => {
+    window.localStorage.setItem('user', JSON.stringify({ email: 'teste@teste.com' }));
+  });
+
   test('Se ao clicar no botão Profile, a rota é encaminhada para "./profile"', () => {
     const { history } = renderWithRouter(<App />, { initialEntries: ['/meals'] });
 

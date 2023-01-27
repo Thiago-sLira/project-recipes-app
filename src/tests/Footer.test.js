@@ -5,6 +5,10 @@ import App from '../App';
 import renderWithRouter from './helpers/renderWithRouter';
 
 describe('Testes para o componente Footer', () => {
+  beforeEach(() => {
+    window.localStorage.setItem('user', JSON.stringify({ email: 'teste@teste.com' }));
+  });
+
   test('Se ao clicar no botão de drinks, a tela em encaminhada para a rota "/drinks"', () => {
     const { history } = renderWithRouter(<App />, { initialEntries: ['/meals'] });
 
