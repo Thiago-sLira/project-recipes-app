@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-// import { getLocalStorageEmail } from '../../localStorage/localStorage';
+import { getLocalStorageEmail } from '../../localStorage/localStorage';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 
 function Profile() {
-  // const getEmailLocalStorage = getLocalStorageEmail('user');
+  const [localStorageEmail, setLocalStorageEmail] = useState({ email: '' });
+  console.log(localStorageEmail);
+
+  useEffect(() => {
+    setLocalStorageEmail(!getLocalStorageEmail('user')
+      ? { email: 'Logue com um email' } : getLocalStorageEmail('user'));
+  }, []);
 
   const history = useHistory();
 
@@ -17,10 +23,8 @@ function Profile() {
   return (
     <div>
       <Header mainPage={ false } title="Profile" />
-      <h1
-        data-testid="profile-email"
-      >
-        {getEmailLocalStorage.email ? getEmailLocalStorage.email : 'Logue com um email' }
+      <h1 data-testid="profile-email">
+        { localStorageEmail.email }
       </h1>
       <section>
         <button

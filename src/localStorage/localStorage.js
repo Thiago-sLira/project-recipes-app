@@ -12,7 +12,8 @@ export const getLocalStorage = (key) => {
 
 export const getLocalStorageEmail = (key) => {
   if (!JSON.parse(localStorage.getItem(key))) {
-    localStorage.setItem(key, JSON.stringify({ email }));
+    console.log('entrou');
+    localStorage.setItem(key, JSON.stringify({ email: 'Logue com um email' }));
   } else {
     return JSON.parse(localStorage.getItem(key));
   }

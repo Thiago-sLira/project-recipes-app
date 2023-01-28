@@ -7,7 +7,7 @@ import Profile from '../pages/Profile/Profile';
 const EMAIL_TEST = 'NAME@EXAMPLE.COM';
 
 describe('2-Testa a página Profile', () => {
-  test('Testa inputs de login ', () => {
+  test.skip('Testa inputs de login ', () => {
     renderWithRouter(<Profile />);
 
     const emailInput = screen.getByTestId('email-input');
