@@ -6,7 +6,6 @@ import Footer from '../../components/Footer';
 
 function Profile() {
   const [localStorageEmail, setLocalStorageEmail] = useState({ email: '' });
-  console.log(localStorageEmail);
 
   useEffect(() => {
     setLocalStorageEmail(!getLocalStorageEmail('user')
