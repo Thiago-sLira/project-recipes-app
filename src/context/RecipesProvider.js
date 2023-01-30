@@ -49,8 +49,8 @@ function RecipesProvider({ children }) {
     }
   }, [fetchApi]);
 
-  const handleCategoryClick = useCallback((categoryName) => {
-    if (categoryName === 'Meals') {
+  const handleCategoryRequisition = useCallback((categoryName) => {
+    if (categoryName === '/meals') {
       fetchCategoriesApi('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
     } else {
       fetchCategoriesApi('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
@@ -77,21 +77,21 @@ function RecipesProvider({ children }) {
   }, [dados, renderRoute]);
 
   const values = useMemo(() => ({
+    erro,
+    dados,
+    errors,
+    recipes,
+    categories,
+    dataCategory,
+    setDados,
+    fetchApi,
+    setRecipes,
+    renderRoute,
+    setCategories,
+    setDataCategory,
     handleMealsRequisition,
     handleDrinksRequisition,
-    handleCategoryClick,
-    errors,
-    dados,
-    renderRoute,
-    recipes,
-    setRecipes,
-    setDados,
-    erro,
-    dataCategory,
-    setDataCategory,
-    categories,
-    setCategories,
-    fetchApi,
+    handleCategoryRequisition,
   }), [
     erro,
     dados,
@@ -103,9 +103,9 @@ function RecipesProvider({ children }) {
     setDados,
     renderRoute,
     setDataCategory,
-    handleCategoryClick,
-    handleDrinksRequisition,
     handleMealsRequisition,
+    handleDrinksRequisition,
+    handleCategoryRequisition,
   ]);
 
   return (
