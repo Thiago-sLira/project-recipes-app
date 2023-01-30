@@ -10,7 +10,7 @@ import Filter from '../components/Categories';
 const NUMBER_TWELVE = 12;
 function Recipes() {
   const {
-    dados, recipes, setRecipes, fetchApi,
+    dados, recipes, setRecipes, handleAllRecipes,
   } = useContext(RecipesContext);
   const history = useHistory();
 
@@ -30,11 +30,7 @@ function Recipes() {
   }, [dados]);
 
   useEffect(() => {
-    if (history.location.pathname === '/meals') {
-      fetchApi('https://www.themealdb.com/api/json/v1/1/search.php?s=');
-    } else {
-      fetchApi('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
-    }
+    handleAllRecipes(history.location.pathname);
   }, [history.location.pathname]);
 
   return (

@@ -9,7 +9,6 @@ export default function useCategoryFetch() {
       const data = await fetch(`${link}`);
       const json = await data.json();
       setDataCategory(json);
-      console.log(json);
     } catch (error) {
       setErro(error);
     }

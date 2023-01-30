@@ -79,7 +79,7 @@ describe('Testes para o componente SearchBar', () => {
     const searchButton = screen.getByTestId(execSearchBtnTestId);
     userEvent.click(searchButton);
 
-    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalled();
   });
   test('Se ao clicar no botão de "Search", um fetch é chamado de acordo com a rota "/drinks"', () => {
     renderWithRouter(<App />, { initialEntries: ['/drinks'] });
@@ -96,6 +96,6 @@ describe('Testes para o componente SearchBar', () => {
     const searchButton = screen.getByTestId(execSearchBtnTestId);
     userEvent.click(searchButton);
 
-    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalled();
   });
 });

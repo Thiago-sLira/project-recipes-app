@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useCallback, useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import RecipesContext from '../context/RecipesContext';
@@ -5,7 +6,8 @@ import RecipesContext from '../context/RecipesContext';
 const NUMBER_FIVE = 5;
 function Filter() {
   const {
-    handleCategoryRequisition, dataCategory, categories, setCategories,
+    handleCategoryRequisition, dataCategory, categories, setCategories, filterByCategory,
+    handleAllRecipes,
   } = useContext(RecipesContext);
   const history = useHistory();
 
@@ -34,10 +36,18 @@ function Filter() {
           type="button"
           key={ strCategory }
           data-testid={ `${strCategory}-category-filter` }
+          onClick={ () => filterByCategory(strCategory, history.location.pathname) }
         >
           { strCategory }
         </button>
       )) }
+      <button
+        type="button"
+        data-testid="All-category-filter"
+        onClick={ () => handleAllRecipes(history.location.pathname) }
+      >
+        All
+      </button>
     </aside>
   );
 }
