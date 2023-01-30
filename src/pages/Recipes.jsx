@@ -50,6 +50,8 @@ function Recipes() {
               key={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
               recipe={ recipe }
               index={ index }
+              pathname={ history.location.pathname }
+              id={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
             />
           ))
         )}
