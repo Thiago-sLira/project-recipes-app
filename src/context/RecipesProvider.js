@@ -1,13 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import useCategoryFetch from '../hooks/useCategoryFetch';
 import useFetch from '../hooks/useFetch';
 import RecipesContext from './RecipesContext';
 
 function RecipesProvider({ children }) {
-  const { dados, errors, fetchApi, setDados } = useFetch();
   const isFirstRender = useRef(true);
+  const { dados, errors, fetchApi, setDados } = useFetch();
   const [recipes, setRecipes] = useState([]);
+  const { dataCategory, erro, fetchCategoriesApi, setDataCategory } = useCategoryFetch();
+  const [categories, setCategories] = useState([]);
 
   const history = useHistory();
 
@@ -61,6 +64,14 @@ function RecipesProvider({ children }) {
     }
   };
 
+  const handleCategoryClick = (categoryName) => {
+    if (categoryName === 'Meals') {
+      fetchCategoriesApi('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+    } else {
+      fetchCategoriesApi('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
+    }
+  };
+
   useEffect(() => {
     if (!isFirstRender.current) renderRoute();
     else isFirstRender.current = false;
@@ -69,13 +80,19 @@ function RecipesProvider({ children }) {
   const values = useMemo(() => ({
     handleMealsRequisition,
     handleDrinksRequisition,
+    handleCategoryClick,
     errors,
     dados,
     renderRoute,
     recipes,
     setRecipes,
     setDados,
-  }), [dados, errors, recipes]);
+    dataCategory,
+    erro,
+    setDataCategory,
+    categories,
+    setCategories,
+  }), [dados, errors, recipes, dataCategory, erro]);
 
   return (
     <RecipesContext.Provider value={ values }>

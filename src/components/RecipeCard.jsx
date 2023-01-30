@@ -2,7 +2,7 @@ import React from 'react';
 
 function RecipeCard({ recipe, index }) {
   return (
-    <div
+    <li
       data-testid={ `${index}-recipe-card` }
     >
       <img
@@ -16,7 +16,7 @@ function RecipeCard({ recipe, index }) {
           (recipe.strMeal ? recipe.strMeal : recipe.strDrink)
         }
       </p>
-    </div>
+    </li>
   );
 }
 

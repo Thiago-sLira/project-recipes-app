@@ -6,17 +6,19 @@ import mealIcon from '../images/mealIcon.svg';
 import RecipesContext from '../context/RecipesContext';
 
 function Footer() {
-  const { setDados } = useContext(RecipesContext);
+  const { setDados, setCategories } = useContext(RecipesContext);
   const history = useHistory();
 
   const handleDrinksClick = () => {
     history.push('/drinks');
     setDados([]);
+    setCategories([]);
   };
 
   const handleMealsClick = () => {
     history.push('/meals');
     setDados([]);
+    setCategories([]);
   };
 
   return (
