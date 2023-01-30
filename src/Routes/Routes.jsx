@@ -1,15 +1,14 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import DoneRecipes from '../pages/DoneRecipes/DoneRecipes';
-import Drinks from '../pages/Drinks/Drinks';
 import DrinksDetails from '../pages/DrinksDetails/DrinksDetails';
 import DrinksInProgress from '../pages/DrinksInProgress/DrinksInProgress';
 import FavoriteRecipes from '../pages/FavoriteRecipes/FavoriteRecipes';
 import Login from '../pages/Login/Login';
-import Meals from '../pages/Meals/Meals';
 import MealsDetails from '../pages/MealsDetails/MealsDetails';
 import MealsInProgress from '../pages/MealsInProgress/MealsInProgress';
 import Profile from '../pages/Profile/Profile';
+import Recipes from '../pages/Recipes';
 
 function Routes() {
   return (
@@ -22,7 +21,7 @@ function Routes() {
       <Route
         exact
         path="/meals"
-        component={ Meals }
+        component={ Recipes }
       />
       <Route
         exact
@@ -37,11 +36,10 @@ function Routes() {
       <Route
         exact
         path="/drinks"
-        component={ Drinks }
+        component={ Recipes }
       />
       <Route
         exact
-        // path="/drinks/:id-da-receita"
         path="/drinks/:id"
         component={ DrinksDetails }
       />

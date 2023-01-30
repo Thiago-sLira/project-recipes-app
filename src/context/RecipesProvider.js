@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import useFetch from '../hooks/useFetch';
 import RecipesContext from './RecipesContext';
 
 function RecipesProvider({ children }) {
-  const { dados, errors, fetchApi } = useFetch();
+  const { dados, errors, fetchApi, setDados } = useFetch();
   const isFirstRender = useRef(true);
+  const [recipes, setRecipes] = useState([]);
 
   const history = useHistory();
 
@@ -47,8 +48,6 @@ function RecipesProvider({ children }) {
   };
 
   const renderRoute = () => {
-    console.log(dados);
-
     if (dados.meals === null || dados.drinks === null) {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
     }
@@ -73,8 +72,10 @@ function RecipesProvider({ children }) {
     errors,
     dados,
     renderRoute,
-
-  }), [dados, errors]);
+    recipes,
+    setRecipes,
+    setDados,
+  }), [dados, errors, recipes]);
 
   return (
     <RecipesContext.Provider value={ values }>

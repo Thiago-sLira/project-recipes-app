@@ -15,5 +15,5 @@ export default function useFetch() {
     }
   };
 
-  return { dados, errors, fetchApi };
+  return { dados, errors, fetchApi, setDados };
 }

@@ -4,10 +4,7 @@ import RecipesContext from '../context/RecipesContext';
 // import Button from 'react-bootstrap/Button';
 
 function SearchBar() {
-  const [searchField, setSearchField] = useState({
-    searchInput: '',
-    radioValue: '',
-  });
+  const [searchField, setSearchField] = useState({ searchInput: '', radioValue: '' });
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const {
     handleMealsRequisition, handleDrinksRequisition,
@@ -28,6 +25,7 @@ function SearchBar() {
     } else {
       handleDrinksRequisition(searchField);
     }
+    setSearchField({ ...searchField, searchInput: '' });
   };
 
   useEffect(() => {
