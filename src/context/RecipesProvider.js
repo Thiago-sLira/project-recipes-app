@@ -11,6 +11,7 @@ function RecipesProvider({ children }) {
   const { dataCategory, erro, fetchCategoriesApi, setDataCategory } = useCategoryFetch();
   const [categories, setCategories] = useState([]);
   const [filterOn, setFilterOn] = useState(false);
+  const [lastCategory, setLastCategory] = useState('');
 
   const history = useHistory();
 
@@ -74,15 +75,6 @@ function RecipesProvider({ children }) {
     }
   }, [dados, history, filterOn]);
 
-  const filterByCategory = useCallback((category, pathname) => {
-    setFilterOn(true);
-    if (pathname === '/meals') {
-      fetchApi(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
-    } else {
-      fetchApi(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`);
-    }
-  }, [fetchApi]);
-
   const handleAllRecipes = useCallback((pathname) => {
     setFilterOn(false);
     if (pathname === '/meals') {
@@ -91,6 +83,22 @@ function RecipesProvider({ children }) {
       fetchApi('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
     }
   }, [fetchApi]);
+
+  const filterByCategory = useCallback((category, pathname) => {
+    if (lastCategory !== category) {
+      setFilterOn(true);
+      setLastCategory(category);
+      if (pathname === '/meals') {
+        fetchApi(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
+      } else {
+        fetchApi(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`);
+      }
+    } else {
+      setFilterOn(false);
+      setLastCategory('');
+      handleAllRecipes(pathname);
+    }
+  }, [fetchApi, handleAllRecipes, lastCategory]);
 
   useEffect(() => {
     if (!isFirstRender.current) renderRoute();
