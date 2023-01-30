@@ -10,7 +10,6 @@ const NUMBER_TWELVE = 12;
 function Recipes() {
   const { dados, recipes, setRecipes } = useContext(RecipesContext);
   const history = useHistory();
-  console.log();
 
   const renderRecipes = () => {
     if (dados.meals && dados.meals.length > 1) {
@@ -31,8 +30,7 @@ function Recipes() {
     <div>
       <Header
         mainPage
-        title={ history.location.pathname.replace('/', '') === 'meals'
-          ? 'meals'.replace('m', 'M') : 'drinks'.replace('d', 'D') }
+        title={ history.location.pathname === '/meals' ? 'Meals' : 'Drinks' }
       />
       { recipes.length > 0 && (
         recipes.map((recipe, index) => (
