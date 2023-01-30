@@ -1,18 +1,22 @@
 import Button from 'react-bootstrap/Button';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import drinkIcon from '../images/drinkIcon.svg';
 import mealIcon from '../images/mealIcon.svg';
+import RecipesContext from '../context/RecipesContext';
 
 function Footer() {
+  const { setDados } = useContext(RecipesContext);
   const history = useHistory();
 
   const handleDrinksClick = () => {
     history.push('/drinks');
+    setDados([]);
   };
 
   const handleMealsClick = () => {
     history.push('/meals');
+    setDados([]);
   };
 
   return (
