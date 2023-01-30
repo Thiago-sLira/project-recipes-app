@@ -15,7 +15,7 @@ function Recipes() {
   const history = useHistory();
 
   const renderRecipes = () => {
-    if (dados.meals && dados.meals.length > 1) {
+    if (dados.meals && dados.meals.length > 0) {
       const slicedArray = dados.meals.slice(0, NUMBER_TWELVE);
       return setRecipes(slicedArray);
     } if (dados.drinks && dados.drinks.length > 1) {

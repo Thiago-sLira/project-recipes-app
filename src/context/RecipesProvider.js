@@ -10,6 +10,7 @@ function RecipesProvider({ children }) {
   const [recipes, setRecipes] = useState([]);
   const { dataCategory, erro, fetchCategoriesApi, setDataCategory } = useCategoryFetch();
   const [categories, setCategories] = useState([]);
+  const [filterOn, setFilterOn] = useState(false);
 
   const history = useHistory();
 
@@ -58,20 +59,23 @@ function RecipesProvider({ children }) {
   }, [fetchCategoriesApi]);
 
   const renderRoute = useCallback(() => {
-    if (dados.meals === null || dados.drinks === null) {
-      global.alert('Sorry, we haven\'t found any recipes for these filters.');
-    }
-    const actualRoute = history.location.pathname.replace('/', '');
-    if (dados.meals) {
-      if (dados.meals.length === 1) {
-        history.push(`/meals/${dados[actualRoute][0].idMeal}`);
+    if (!filterOn) {
+      if (dados.meals === null || dados.drinks === null) {
+        global.alert('Sorry, we haven\'t found any recipes for these filters.');
       }
-    } else if (dados.drinks && dados.drinks.length === 1) {
-      history.push(`/drinks/${dados[actualRoute][0].idDrink}`);
+      const actualRoute = history.location.pathname.replace('/', '');
+      if (dados.meals) {
+        if (dados.meals.length === 1) {
+          history.push(`/meals/${dados[actualRoute][0].idMeal}`);
+        }
+      } else if (dados.drinks && dados.drinks.length === 1) {
+        history.push(`/drinks/${dados[actualRoute][0].idDrink}`);
+      }
     }
-  }, [dados, history]);
+  }, [dados, history, filterOn]);
 
   const filterByCategory = useCallback((category, pathname) => {
+    setFilterOn(true);
     if (pathname === '/meals') {
       fetchApi(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
     } else {
@@ -80,6 +84,7 @@ function RecipesProvider({ children }) {
   }, [fetchApi]);
 
   const handleAllRecipes = useCallback((pathname) => {
+    setFilterOn(false);
     if (pathname === '/meals') {
       fetchApi('https://www.themealdb.com/api/json/v1/1/search.php?s=');
     } else {
@@ -103,6 +108,7 @@ function RecipesProvider({ children }) {
     fetchApi,
     setRecipes,
     renderRoute,
+    setFilterOn,
     setCategories,
     setDataCategory,
     filterByCategory,

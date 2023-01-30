@@ -7,7 +7,7 @@ function SearchBar() {
   const [searchField, setSearchField] = useState({ searchInput: '', radioValue: '' });
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const {
-    handleMealsRequisition, handleDrinksRequisition,
+    handleMealsRequisition, handleDrinksRequisition, setFilterOn,
   } = useContext(RecipesContext);
 
   const history = useHistory();
@@ -20,6 +20,7 @@ function SearchBar() {
   };
 
   const handleSearchClick = () => {
+    setFilterOn(false);
     if (history.location.pathname === '/meals') {
       handleMealsRequisition(searchField);
     } else {
