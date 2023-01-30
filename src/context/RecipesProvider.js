@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import useCategoryFetch from '../hooks/useCategoryFetch';
 import useFetch from '../hooks/useFetch';
@@ -14,7 +13,7 @@ function RecipesProvider({ children }) {
 
   const history = useHistory();
 
-  const handleMealsRequisition = (searchField) => {
+  const handleMealsRequisition = useCallback((searchField) => {
     const linkIngredient = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchField.searchInput}`;
     const linkName = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchField.searchInput}`;
     const linkFirstLetter = `https://www.themealdb.com/api/json/v1/1/search.php?f=${searchField.searchInput}`;
@@ -30,9 +29,9 @@ function RecipesProvider({ children }) {
     } else {
       fetchApi(linkIngredient);
     }
-  };
+  }, [fetchApi]);
 
-  const handleDrinksRequisition = (searchField) => {
+  const handleDrinksRequisition = useCallback((searchField) => {
     const linkIngredient = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${searchField.searchInput}`;
     const linkName = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchField.searchInput}`;
     const linkFirstLetter = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${searchField.searchInput}`;
@@ -48,9 +47,17 @@ function RecipesProvider({ children }) {
     } else {
       fetchApi(linkIngredient);
     }
-  };
+  }, [fetchApi]);
 
-  const renderRoute = () => {
+  const handleCategoryClick = useCallback((categoryName) => {
+    if (categoryName === 'Meals') {
+      fetchCategoriesApi('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+    } else {
+      fetchCategoriesApi('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
+    }
+  }, [fetchCategoriesApi]);
+
+  const renderRoute = useCallback(() => {
     if (dados.meals === null || dados.drinks === null) {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
     }
@@ -62,20 +69,12 @@ function RecipesProvider({ children }) {
     } else if (dados.drinks && dados.drinks.length === 1) {
       history.push(`/drinks/${dados[actualRoute][0].idDrink}`);
     }
-  };
-
-  const handleCategoryClick = (categoryName) => {
-    if (categoryName === 'Meals') {
-      fetchCategoriesApi('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
-    } else {
-      fetchCategoriesApi('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
-    }
-  };
+  }, [dados, history]);
 
   useEffect(() => {
     if (!isFirstRender.current) renderRoute();
     else isFirstRender.current = false;
-  }, [dados]);
+  }, [dados, renderRoute]);
 
   const values = useMemo(() => ({
     handleMealsRequisition,
@@ -87,12 +86,27 @@ function RecipesProvider({ children }) {
     recipes,
     setRecipes,
     setDados,
-    dataCategory,
     erro,
+    dataCategory,
     setDataCategory,
     categories,
     setCategories,
-  }), [dados, errors, recipes, dataCategory, erro]);
+    fetchApi,
+  }), [
+    erro,
+    dados,
+    errors,
+    recipes,
+    categories,
+    dataCategory,
+    fetchApi,
+    setDados,
+    renderRoute,
+    setDataCategory,
+    handleCategoryClick,
+    handleDrinksRequisition,
+    handleMealsRequisition,
+  ]);
 
   return (
     <RecipesContext.Provider value={ values }>

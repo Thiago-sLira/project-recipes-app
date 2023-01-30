@@ -12,7 +12,7 @@ const NUMBER_TWELVE = 12;
 const NUMBER_FIVE = 5;
 function Recipes() {
   const {
-    dados, recipes, setRecipes,
+    dados, recipes, setRecipes, fetchApi,
     dataCategory, categories, setCategories,
   } = useContext(RecipesContext);
   const history = useHistory();
@@ -35,7 +35,6 @@ function Recipes() {
   const rederCategories = () => {
     if (dataCategory.meals) {
       const slicedArray = dataCategory.meals.slice(0, NUMBER_FIVE);
-      console.log('entrou');
       return setCategories(slicedArray);
     } if (dataCategory.drinks) {
       const slicedArray = dataCategory.drinks.slice(0, NUMBER_FIVE);
@@ -46,6 +45,14 @@ function Recipes() {
   useEffect(() => {
     rederCategories();
   }, [dataCategory]);
+
+  useEffect(() => {
+    if (history.location.pathname === '/meals') {
+      fetchApi('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    } else {
+      fetchApi('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+    }
+  }, [history]);
 
   return (
     <div>
@@ -70,10 +77,10 @@ function Recipes() {
       </ul>
       <ul>
         { categories.length > 0 && (
-          categories.map(({ strCategory }) => (
+          categories.map((category) => (
             <CategoryCard
-              key={ strCategory }
-              strCategory={ strCategory }
+              key={ category.strCategory }
+              strCategory={ category.strCategory }
             />
           ))
         )}
