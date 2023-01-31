@@ -3,20 +3,29 @@ import { screen } from '@testing-library/react';
 // import userEvent from '@testing-library/user-event';
 import renderWithRouter from './helpers/renderWithRouter';
 import App from '../App';
-import mealCategories, { meals } from '../../cypress/mocks/mealCategories';
+import mealCategories from '../../cypress/mocks/mealCategories';
+import meals from '../../cypress/mocks/meals';
+import beefMeals from '../../cypress/mocks/beefMeals';
 
 describe('Testes para a tela principal de receitas, na rota "/meals"', () => {
   test('Teste se ao carregar a página na rota "/meals", receitas e categorias de comidas são renderizadas', async () => {
     jest.spyOn(global, 'fetch')
       .mockResolvedValueOnce({
-        json: jest.fn().mockResolvedValue(meals)
-          .mockResolvedValue('segunda requisição de meals')
-          .mockResolvedValue('primeira requisição de drinks')
-          .mockResolvedValue('nova requisição de meals'),
-      })
-      .mockResolvedValue({
         json: jest.fn().mockResolvedValue(mealCategories),
+      })
+      .mockResolvedValueOnce({
+        json: jest.fn().mockResolvedValue(meals),
+      })
+      .mockResolvedValueOnce({
+        json: jest.fn().mockResolvedValue(beefMeals),
+      })
+      .mockResolvedValueOnce({
+        json: jest.fn().mockResolvedValue(meals),
       });
+
+    // jest.spyOn(global, 'fetch').mockImplementation((url) => {
+    //   console.log(url);
+    // });
 
     renderWithRouter(<App />, { initialEntries: ['/meals'] });
 
