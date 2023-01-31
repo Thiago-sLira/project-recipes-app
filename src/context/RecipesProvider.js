@@ -12,8 +12,29 @@ function RecipesProvider({ children }) {
   const [categories, setCategories] = useState([]);
   const [filterOn, setFilterOn] = useState(false);
   const [lastCategory, setLastCategory] = useState('');
+  const [resultApiId, setResultApiId] = useState([]);
 
   const history = useHistory();
+
+  const fetchId = useCallback((recipeId) => {
+    const getFetchMeals = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`;
+    const getFetchDrinks = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${recipeId}`;
+
+    if (history.location.pathname.includes('meals')) {
+      fetchApi(getFetchMeals);
+    }
+    if (history.location.pathname.includes('drinks')) {
+      fetchApi(getFetchDrinks);
+    }
+  }, [fetchApi, history.location.pathname]);
+
+  useEffect(() => {
+    if (history.location.pathname.includes('meals')) {
+      setResultApiId(dados.meals ? dados.meals : []);
+    } if (history.location.pathname.includes('drinks')) {
+      setResultApiId(dados.drinks ? dados.drinks : []);
+    }
+  }, [dados, history.location.pathname]);
 
   const handleMealsRequisition = useCallback((searchField) => {
     const linkIngredient = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchField.searchInput}`;
@@ -111,9 +132,11 @@ function RecipesProvider({ children }) {
     errors,
     recipes,
     categories,
+    resultApiId,
     dataCategory,
-    setDados,
+    fetchId,
     fetchApi,
+    setDados,
     setRecipes,
     renderRoute,
     setFilterOn,
@@ -130,7 +153,9 @@ function RecipesProvider({ children }) {
     errors,
     recipes,
     categories,
+    resultApiId,
     dataCategory,
+    fetchId,
     fetchApi,
     setDados,
     renderRoute,
