@@ -1,13 +1,19 @@
 import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
+import useCategoryFetch from '../hooks/useCategoryFetch';
 import useFetch from '../hooks/useFetch';
 import RecipesContext from './RecipesContext';
 
 function RecipesProvider({ children }) {
-  const { dados, errors, fetchApi, setDados } = useFetch();
   const isFirstRender = useRef(true);
-  const [resultApiId, setResultApiId] = useState([]);
+  const { dados, errors, fetchApi, setDados } = useFetch();
   const [recipes, setRecipes] = useState([]);
+  const { dataCategory, erro, fetchCategoriesApi, setDataCategory } = useCategoryFetch();
+  const [categories, setCategories] = useState([]);
+  const [filterOn, setFilterOn] = useState(false);
+  const [lastCategory, setLastCategory] = useState('');
+  const [resultApiId, setResultApiId] = useState([]);
+
   const history = useHistory();
 
   const fetchId = useCallback((recipeId) => {
@@ -66,19 +72,53 @@ function RecipesProvider({ children }) {
     }
   }, [fetchApi]);
 
-  const renderRoute = useCallback(() => {
-    if (dados.meals === null || dados.drinks === null) {
-      global.alert('Sorry, we haven\'t found any recipes for these filters.');
+  const handleCategoryRequisition = useCallback((categoryName) => {
+    if (categoryName === '/meals') {
+      fetchCategoriesApi('https://www.themealdb.com/api/json/v1/1/list.php?c=list');
+    } else {
+      fetchCategoriesApi('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
     }
+  }, [fetchCategoriesApi]);
 
-    if (dados.meals) {
-      if (dados.meals.length === 1) {
-        history.push(`/meals/${dados.meals[0].idMeal}`);
+  const renderRoute = useCallback(() => {
+    if (!filterOn) {
+      if (dados.meals === null || dados.drinks === null) {
+        global.alert('Sorry, we haven\'t found any recipes for these filters.');
       }
-    } else if (dados.drinks && dados.drinks.length === 1) {
-      history.push(`/drinks/${dados.drinks[0].idDrink}`);
+      if (dados.meals) {
+        if (dados.meals.length === 1) {
+          history.push(`/meals/${dados.meals[0].idMeal}`);
+        }
+      } else if (dados.drinks && dados.drinks.length === 1) {
+        history.push(`/drinks/${dados.drinks[0].idDrink}`);
+      }
     }
-  }, [dados.meals, dados.drinks, history]);
+  }, [dados, history, filterOn]);
+
+  const handleAllRecipes = useCallback((pathname) => {
+    setFilterOn(false);
+    if (pathname === '/meals') {
+      fetchApi('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    } else {
+      fetchApi('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+    }
+  }, [fetchApi]);
+
+  const filterByCategory = useCallback((category, pathname) => {
+    if (lastCategory !== category) {
+      setFilterOn(true);
+      setLastCategory(category);
+      if (pathname === '/meals') {
+        fetchApi(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`);
+      } else {
+        fetchApi(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${category}`);
+      }
+    } else {
+      setFilterOn(false);
+      setLastCategory('');
+      handleAllRecipes(pathname);
+    }
+  }, [fetchApi, handleAllRecipes, lastCategory]);
 
   useEffect(() => {
     if (!isFirstRender.current) renderRoute();
@@ -86,26 +126,44 @@ function RecipesProvider({ children }) {
   }, [dados, renderRoute]);
 
   const values = useMemo(() => ({
-    handleMealsRequisition,
-    handleDrinksRequisition,
-    errors,
+    erro,
     dados,
-    renderRoute,
+    errors,
     recipes,
+    categories,
+    resultApiId,
+    dataCategory,
+    fetchId,
+    fetchApi,
+    setDados,
     setRecipes,
-    setDados,
-    fetchId,
-    resultApiId,
+    renderRoute,
+    setFilterOn,
+    setCategories,
+    setDataCategory,
+    filterByCategory,
+    handleAllRecipes,
+    handleMealsRequisition,
+    handleDrinksRequisition,
+    handleCategoryRequisition,
   }), [
+    erro,
     dados,
     errors,
     recipes,
+    categories,
     resultApiId,
-    setDados,
+    dataCategory,
     fetchId,
+    fetchApi,
+    setDados,
+    renderRoute,
+    setDataCategory,
+    filterByCategory,
+    handleAllRecipes,
     handleMealsRequisition,
     handleDrinksRequisition,
-    renderRoute,
+    handleCategoryRequisition,
   ]);
 
   return (
