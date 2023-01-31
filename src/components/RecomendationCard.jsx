@@ -1,21 +1,21 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function RecipeCard({ recipe, index, pathname, id, width }) {
+function RecomendationCard({ recipe, index, pathname, id, width }) {
   return (
     <li
-      data-testid={ `${index}-recipe-card` }
+      data-testid={ `${index}-recommendation-card` }
     >
       <Link
         to={ `${pathname}/${id}` }
       >
         <img
           src={ (recipe.strMealThumb ? recipe.strMealThumb : recipe.strDrinkThumb) }
-          data-testid={ `${index}-card-img` }
+          //   data-testid={ `${index}-card-img` }
           alt="meal"
           width={ width }
         />
-        <p data-testid={ `${index}-card-name` }>
+        <p data-testid={ `${index}-recommendation-title` }>
           {
             (recipe.strMeal ? recipe.strMeal : recipe.strDrink)
           }
@@ -25,6 +25,6 @@ function RecipeCard({ recipe, index, pathname, id, width }) {
   );
 }
 
-RecipeCard.propTypes = {}.isRequired;
+RecomendationCard.propTypes = {}.isRequired;
 
-export default RecipeCard;
+export default RecomendationCard;

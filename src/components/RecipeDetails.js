@@ -2,22 +2,29 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useHistory, useParams } from 'react-router-dom';
+import Slider from 'react-slick';
 import RecipesContext from '../context/RecipesContext';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
-import { setLocalStorage, getLocalStorageFavorite } from '../localStorage/localStorage';
 import useRecomendationFetch from '../hooks/useRecomendationFetch';
+import { setLocalStorage, getLocalStorageFavorite } from '../localStorage/localStorage';
+import RecipeCard from './RecipeCard';
 
 const copy = require('clipboard-copy');
 
+const settings = {
+  dots: true, infinite: true, speed: 500, slidesToShow: 2, slidesToScroll: 2,
+};
+const SIX = 6;
 function RecipeDetails() {
   const { fetchId, resultApiId } = useContext(RecipesContext);
-  const { fetchRecomendationApi } = useRecomendationFetch();
+  const { fetchRecomendationApi, dataRecomendation } = useRecomendationFetch();
   const [ingredientsValid, setIngredientsValid] = useState([]);
   const [isCopied, setIsCopied] = useState('');
   const [isClicked, setIsClicked] = useState(false);
   const [recipeDone, setRecipeDone] = useState(false);
+  const [recomendations, setRecomendations] = useState([]);
   const params = useParams();
   const history = useHistory();
 
@@ -41,6 +48,14 @@ function RecipeDetails() {
   };
 
   useEffect(() => {
+    const route = dataRecomendation.meals || dataRecomendation.drinks;
+    if (route) {
+      const slicedArray = route.slice(0, SIX);
+      setRecomendations(slicedArray || []);
+    }
+  }, [dataRecomendation]);
+
+  useEffect(() => {
     if (history.location.pathname.includes('meals')) {
       fetchRecomendationApi('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
     } else {
@@ -56,7 +71,7 @@ function RecipeDetails() {
     if (findLocalStorage) {
       setIsClicked(true);
     }
-  }, []);
+  }, [history.location.pathname]);
 
   const getValidIngredients = (str) => Object.entries(resultApiId[0])
     .filter((entry) => entry[0].includes(str))
@@ -186,7 +201,24 @@ function RecipeDetails() {
           )}
         </div>
       )}
-
+      <section>
+        <h2>Recomendations</h2>
+        <Slider { ...settings }>
+          { recomendations.length > 0 && (
+            recomendations.map((recipe, index) => (
+              <RecipeCard
+                key={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
+                recipe={ recipe }
+                index={ index }
+                pathname={ history.location.pathname.includes('meals')
+                  ? '/drinks' : '/meals' }
+                id={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
+                width="150px"
+              />
+            ))
+          )}
+        </Slider>
+      </section>
     </div>
   );
 }

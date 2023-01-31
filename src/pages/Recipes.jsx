@@ -2,10 +2,10 @@
 import React, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import RecipesContext from '../context/RecipesContext';
-import RecipeCard from '../components/RecipeCard';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Filter from '../components/Categories';
+import RecomendationCard from '../components/RecomendationCard';
 
 const NUMBER_TWELVE = 12;
 function Recipes() {
@@ -46,12 +46,13 @@ function Recipes() {
       <ul>
         { recipes.length > 0 && (
           recipes.map((recipe, index) => (
-            <RecipeCard
+            <RecomendationCard
               key={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
               recipe={ recipe }
               index={ index }
               pathname={ history.location.pathname }
               id={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
+              width="200px"
             />
           ))
         )}
