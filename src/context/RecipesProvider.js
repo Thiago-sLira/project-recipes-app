@@ -85,13 +85,12 @@ function RecipesProvider({ children }) {
       if (dados.meals === null || dados.drinks === null) {
         global.alert('Sorry, we haven\'t found any recipes for these filters.');
       }
-      const actualRoute = history.location.pathname.replace('/', '');
       if (dados.meals) {
         if (dados.meals.length === 1) {
-          history.push(`/meals/${dados[actualRoute][0].idMeal}`);
+          history.push(`/meals/${dados.meals[0].idMeal}`);
         }
       } else if (dados.drinks && dados.drinks.length === 1) {
-        history.push(`/drinks/${dados[actualRoute][0].idDrink}`);
+        history.push(`/drinks/${dados.drinks[0].idDrink}`);
       }
     }
   }, [dados, history, filterOn]);
