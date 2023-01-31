@@ -7,18 +7,49 @@ import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import { setLocalStorage, getLocalStorageFavorite } from '../localStorage/localStorage';
+import useRecomendationFetch from '../hooks/useRecomendationFetch';
 
 const copy = require('clipboard-copy');
 
 function RecipeDetails() {
   const { fetchId, resultApiId } = useContext(RecipesContext);
+  const { fetchRecomendationApi } = useRecomendationFetch();
   const [ingredientsValid, setIngredientsValid] = useState([]);
   const [isCopied, setIsCopied] = useState('');
   const [isClicked, setIsClicked] = useState(false);
+  const [recipeDone, setRecipeDone] = useState(false);
   const params = useParams();
   const history = useHistory();
 
+  const mockDoneRecipes = [{
+    id: 'id-da-receita',
+    type: 'meal-ou-drink',
+    nationality: 'nacionalidade-da-receita-ou-texto-vazio',
+    category: 'categoria-da-receita-ou-texto-vazio',
+    alcoholicOrNot: 'alcoholic-ou-non-alcoholic-ou-texto-vazio',
+    name: 'nome-da-receita',
+    image: 'imagem-da-receita',
+    doneDate: 'quando-a-receita-foi-concluida',
+    tags: 'array-de-tags-da-receita-ou-array-vazio',
+  }];
+  const getDoneRecipes = () => {
+    // const recipesDoneStorage = getLocalStorageDoneRecipes(doneRecipes);
+    const recipesDoneStorage = mockDoneRecipes;
+    if (recipesDoneStorage.some((r) => r.id.includes(resultApiId.id))) {
+      setRecipeDone(true);
+    }
+  };
+
   useEffect(() => {
+    if (history.location.pathname.includes('meals')) {
+      fetchRecomendationApi('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
+    } else {
+      fetchRecomendationApi('https://www.themealdb.com/api/json/v1/1/search.php?s=');
+    }
+  }, [history.location.pathname]);
+
+  useEffect(() => {
+    getDoneRecipes();
     fetchId(params.id);
     const returnLocalStorage = getLocalStorageFavorite('favoriteRecipes');
     const findLocalStorage = returnLocalStorage.find((recipe) => recipe.id === params.id);
@@ -78,7 +109,6 @@ function RecipeDetails() {
 
   return (
     <div>
-
       {resultApiId.length > 0 && (
         <div>
           <img
@@ -135,7 +165,6 @@ function RecipeDetails() {
           <p data-testid="instructions">
             {resultApiId[0].strInstructions}
           </p>
-
           <iframe
             width="500"
             height="350"
@@ -145,7 +174,16 @@ function RecipeDetails() {
             allow="autoplay"
             title="Receita"
           />
-
+          {recipeDone && (
+            <Button
+              type="button"
+              data-testid="start-recipe-btn"
+              className="start-recipe-btn"
+              // onClick={ getDoneRecipes }
+            >
+              Start Recipe
+            </Button>
+          )}
         </div>
       )}
 
