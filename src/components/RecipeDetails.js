@@ -4,13 +4,12 @@ import { useParams } from 'react-router-dom';
 import RecipesContext from '../context/RecipesContext';
 
 function RecipeDetails() {
-  const { fetchId, resultApiId, dados } = useContext(RecipesContext);
+  const { fetchId, resultApiId } = useContext(RecipesContext);
   const [ingredientsValid, setIngredientsValid] = useState([]);
   const params = useParams();
 
   useEffect(() => {
     fetchId(params.id);
-    console.log('entrou useEffect');
   }, []);
 
   const getValidIngredients = (str) => Object.entries(resultApiId[0])
@@ -23,16 +22,16 @@ function RecipeDetails() {
 
     return ingredient.map((data, index) => ({
       ingredient: data[1],
-      measure: measure[index][1],
+      measure: (measure[index] ? measure[index][1] : ''),
     }));
   };
 
   useEffect(() => {
     if (resultApiId.length > 0) {
-      setIngredientsValid(ingredientsValidArray());
-      ingredientsValidArray();
+      const validsIngredients = ingredientsValidArray();
+      setIngredientsValid(validsIngredients);
     }
-  }, [dados, resultApiId]);
+  }, [resultApiId]);
 
   return (
     <div>

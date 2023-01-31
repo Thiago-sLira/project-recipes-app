@@ -18,7 +18,7 @@ function Recipes() {
     if (dados.meals && dados.meals.length > 0) {
       const slicedArray = dados.meals.slice(0, NUMBER_TWELVE);
       return setRecipes(slicedArray);
-    } if (dados.drinks && dados.drinks.length > 1) {
+    } if (dados.drinks && dados.drinks.length > 0) {
       const slicedArray = dados.drinks.slice(0, NUMBER_TWELVE);
       return setRecipes(slicedArray);
     }
@@ -37,11 +37,11 @@ function Recipes() {
     <div>
       <Header
         mainPage
-        title={ history.location.pathname === '/meals' ? 'Meals' : 'Drinks' }
+        title={ history.location.pathname.includes('/meals') ? 'Meals' : 'Drinks' }
       />
       <br />
       <Filter
-        actualRoute={ history.location.pathname === '/meals' ? 'Meals' : 'Drinks' }
+        actualRoute={ history.location.pathname.includes('/meals') ? 'Meals' : 'Drinks' }
       />
       <ul>
         { recipes.length > 0 && (

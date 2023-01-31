@@ -7,8 +7,8 @@ import RecipesContext from './RecipesContext';
 function RecipesProvider({ children }) {
   const isFirstRender = useRef(true);
   const { dados, errors, fetchApi, setDados } = useFetch();
-  const [recipes, setRecipes] = useState([]);
   const { dataCategory, erro, fetchCategoriesApi, setDataCategory } = useCategoryFetch();
+  const [recipes, setRecipes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [filterOn, setFilterOn] = useState(false);
   const [lastCategory, setLastCategory] = useState('');
@@ -16,25 +16,37 @@ function RecipesProvider({ children }) {
 
   const history = useHistory();
 
-  const fetchId = useCallback((recipeId) => {
+  const fetchId = useCallback(async (recipeId) => {
     const getFetchMeals = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`;
     const getFetchDrinks = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${recipeId}`;
 
     if (history.location.pathname.includes('meals')) {
-      fetchApi(getFetchMeals);
+      try {
+        const data = await fetch(getFetchMeals);
+        const json = await data.json();
+        setResultApiId(json.meals || []);
+      } catch (error) {
+        console.log(error);
+      }
     }
     if (history.location.pathname.includes('drinks')) {
-      fetchApi(getFetchDrinks);
+      try {
+        const data = await fetch(getFetchDrinks);
+        const json = await data.json();
+        setResultApiId(json.drinks || []);
+      } catch (error) {
+        console.log(error);
+      }
     }
-  }, [fetchApi, history.location.pathname]);
+  }, [history.location.pathname]);
 
-  useEffect(() => {
-    if (history.location.pathname.includes('meals')) {
-      setResultApiId(dados.meals ? dados.meals : []);
-    } if (history.location.pathname.includes('drinks')) {
-      setResultApiId(dados.drinks ? dados.drinks : []);
-    }
-  }, [dados, history.location.pathname]);
+  // useEffect(() => {
+  //   if (history.location.pathname.includes('meals')) {
+  //     setResultApiId(dados.meals ? dados.meals : []);
+  //   } if (history.location.pathname.includes('drinks')) {
+  //     setResultApiId(dados.drinks ? dados.drinks : []);
+  //   }
+  // }, [dados, history.location.pathname]);
 
   const handleMealsRequisition = useCallback((searchField) => {
     const linkIngredient = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchField.searchInput}`;
@@ -97,7 +109,7 @@ function RecipesProvider({ children }) {
 
   const handleAllRecipes = useCallback((pathname) => {
     setFilterOn(false);
-    if (pathname === '/meals') {
+    if (pathname.includes('/meals')) {
       fetchApi('https://www.themealdb.com/api/json/v1/1/search.php?s=');
     } else {
       fetchApi('https://www.thecocktaildb.com/api/json/v1/1/search.php?s=');
