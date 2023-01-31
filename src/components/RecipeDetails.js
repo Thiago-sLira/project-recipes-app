@@ -54,7 +54,10 @@ function RecipeDetails() {
             }
           </h1>
           <h2 data-testid="recipe-category">
-            { resultApiId[0].strCategory }
+            { resultApiId[0].strCategory}
+          </h2>
+          <h2 data-testid="recipe-category">
+            { resultApiId[0].strAlcoholic }
           </h2>
           {ingredientsValid.length > 0 && (
             ingredientsValid.map((ingredient, index) => (
@@ -67,6 +70,20 @@ function RecipeDetails() {
               </p>
             ))
           )}
+          <p data-testid="instructions">
+            {resultApiId[0].strInstructions}
+          </p>
+
+          <iframe
+            width="500"
+            height="350"
+            data-testid="video"
+            src={ resultApiId[0].strYoutube
+               && resultApiId[0].strYoutube.replace('watch?v=', 'embed/') }
+            allow="autoplay"
+            title="Receita"
+          />
+
         </div>
       )}
 
