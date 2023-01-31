@@ -1,14 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useContext, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import RecipesContext from '../context/RecipesContext';
 
 function RecipeDetails() {
   const { fetchId, resultApiId, dados } = useContext(RecipesContext);
   const [ingredientsValid, setIngredientsValid] = useState([]);
+  const params = useParams();
 
   useEffect(() => {
-    fetchId();
-    console.log(resultApiId);
+    fetchId(params.id);
+    console.log('entrou useEffect');
   }, []);
 
   const getValidIngredients = (str) => Object.entries(resultApiId[0])
@@ -30,7 +32,7 @@ function RecipeDetails() {
       setIngredientsValid(ingredientsValidArray());
       ingredientsValidArray();
     }
-  }, [dados]);
+  }, [dados, resultApiId]);
 
   return (
     <div>
@@ -54,7 +56,7 @@ function RecipeDetails() {
           <h2 data-testid="recipe-category">
             { resultApiId[0].strCategory }
           </h2>
-          {ingredientsValid && (
+          {ingredientsValid.length > 0 && (
             ingredientsValid.map((ingredient, index) => (
               <p
                 data-testid={ `${index}-ingredient-name-and-measure` }

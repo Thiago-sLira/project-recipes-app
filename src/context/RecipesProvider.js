@@ -3,9 +3,6 @@ import { useHistory } from 'react-router-dom';
 import useFetch from '../hooks/useFetch';
 import RecipesContext from './RecipesContext';
 
-const NUMBER_7 = 7;
-const NUMBER_8 = 8;
-
 function RecipesProvider({ children }) {
   const { dados, errors, fetchApi, setDados } = useFetch();
   const isFirstRender = useRef(true);
@@ -13,25 +10,27 @@ function RecipesProvider({ children }) {
   const [recipes, setRecipes] = useState([]);
   const history = useHistory();
 
-  const fetchId = useCallback(async () => {
-    const locationPath = history.location.pathname;
-    const locationSliceMeals = locationPath.slice(NUMBER_7);
-    const locationSliceDrinks = locationPath.slice(NUMBER_8);
+  const fetchId = useCallback((recipeId) => {
+    const getFetchMeals = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`;
+    const getFetchDrinks = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${recipeId}`;
 
-    const getFetchMeals = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${locationSliceMeals}`;
-    const getFetchDrinks = `https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${locationSliceDrinks}`;
-    if (dados && locationPath.includes('meals')) {
-      await fetchApi(getFetchMeals);
-      setResultApiId(dados.meals ? dados.meals : []);
-      console.log('entrou');
+    if (history.location.pathname.includes('meals')) {
+      fetchApi(getFetchMeals);
     }
-    if (dados && locationPath.includes('drinks')) {
-      await fetchApi(getFetchDrinks);
+    if (history.location.pathname.includes('drinks')) {
+      fetchApi(getFetchDrinks);
+    }
+  }, [fetchApi, history.location.pathname]);
+
+  useEffect(() => {
+    if (history.location.pathname.includes('meals')) {
+      setResultApiId(dados.meals ? dados.meals : []);
+    } if (history.location.pathname.includes('drinks')) {
       setResultApiId(dados.drinks ? dados.drinks : []);
     }
-  }, [dados, fetchApi, history.location.pathname]);
+  }, [dados, history.location.pathname]);
 
-  const handleMealsRequisition = (searchField) => {
+  const handleMealsRequisition = useCallback((searchField) => {
     const linkIngredient = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchField.searchInput}`;
     const linkName = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchField.searchInput}`;
     const linkFirstLetter = `https://www.themealdb.com/api/json/v1/1/search.php?f=${searchField.searchInput}`;
@@ -47,9 +46,9 @@ function RecipesProvider({ children }) {
     } else {
       fetchApi(linkIngredient);
     }
-  };
+  }, [fetchApi]);
 
-  const handleDrinksRequisition = (searchField) => {
+  const handleDrinksRequisition = useCallback((searchField) => {
     const linkIngredient = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${searchField.searchInput}`;
     const linkName = `https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${searchField.searchInput}`;
     const linkFirstLetter = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=${searchField.searchInput}`;
@@ -65,9 +64,9 @@ function RecipesProvider({ children }) {
     } else {
       fetchApi(linkIngredient);
     }
-  };
+  }, [fetchApi]);
 
-  const renderRoute = () => {
+  const renderRoute = useCallback(() => {
     if (dados.meals === null || dados.drinks === null) {
       global.alert('Sorry, we haven\'t found any recipes for these filters.');
     }
@@ -79,12 +78,12 @@ function RecipesProvider({ children }) {
     } else if (dados.drinks && dados.drinks.length === 1) {
       history.push(`/drinks/${dados.drinks[0].idDrink}`);
     }
-  };
+  }, [dados.meals, dados.drinks, history]);
 
   useEffect(() => {
     if (!isFirstRender.current) renderRoute();
     else isFirstRender.current = false;
-  }, [dados]);
+  }, [dados, renderRoute]);
 
   const values = useMemo(() => ({
     handleMealsRequisition,
@@ -97,7 +96,17 @@ function RecipesProvider({ children }) {
     setDados,
     fetchId,
     resultApiId,
-  }), [dados, errors, recipes, resultApiId, setDados, fetchId]);
+  }), [
+    dados,
+    errors,
+    recipes,
+    resultApiId,
+    setDados,
+    fetchId,
+    handleMealsRequisition,
+    handleDrinksRequisition,
+    renderRoute,
+  ]);
 
   return (
     <RecipesContext.Provider value={ values }>
