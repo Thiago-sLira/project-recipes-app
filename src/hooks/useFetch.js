@@ -10,6 +10,7 @@ export default function useFetch() {
       const json = await data.json();
       setDados(json);
       // console.log(json);
+      // console.log(dados);
     } catch (error) {
       setErrors(error);
     }
