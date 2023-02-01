@@ -199,17 +199,21 @@ function RecipeDetails() {
       <section>
         <h2>Recomendations</h2>
         { recomendations.length > 0 && (
-          recomendations.map((recipe, index) => (
-            <RecomendationCard
-              key={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
-              recipe={ recipe }
-              index={ index }
-              pathname={ history.location.pathname.includes('meals')
-                ? '/drinks' : '/meals' }
-              id={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
-              width="150px"
-            />
-          ))
+          <div className="container">
+            {
+              recomendations.map((recipe, index) => (
+                <RecomendationCard
+                  key={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
+                  recipe={ recipe }
+                  index={ index }
+                  pathname={ history.location.pathname.includes('meals')
+                    ? '/drinks' : '/meals' }
+                  id={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
+                  width="150px"
+                />
+              ))
+            }
+          </div>
         )}
       </section>
     </div>
