@@ -7,13 +7,13 @@ import mealCategories from '../../cypress/mocks/mealCategories';
 import meals from '../../cypress/mocks/meals';
 import mealsByIngredient from '../../cypress/mocks/mealsByIngredient';
 import oneMeal from '../../cypress/mocks/oneMeal';
-import oneMealLetter from '../../cypress/mocks/oneMealLetter';
+import oneMealLetter from './mocks/oneMealLetter';
 import emptyMeals from '../../cypress/mocks/emptyMeals';
 import drinkCategories from '../../cypress/mocks/drinkCategories';
 import drinks from '../../cypress/mocks/drinks';
 import drinksByIngredient from '../../cypress/mocks/drinksByIngredient';
 import oneDrink from '../../cypress/mocks/oneDrink';
-import oneDrinkLetter from '../../cypress/mocks/oneDrinkLetter';
+import oneDrinkLetter from './mocks/oneDrinkLetter';
 
 const searchTopBtnTestId = 'search-top-btn';
 const searchInputTestId = 'search-input';
