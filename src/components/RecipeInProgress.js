@@ -1,9 +1,10 @@
 import React from 'react';
+import RecipeDetailsCard from './RecipeDetailsCard';
 
 function RecipeInProgress() {
   return (
     <div>
-      <h2> Single Item</h2>
+      <RecipeDetailsCard />
     </div>
   );
 }

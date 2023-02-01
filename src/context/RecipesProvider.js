@@ -124,6 +124,19 @@ function RecipesProvider({ children }) {
     }
   }, [fetchApi, handleAllRecipes, lastCategory]);
 
+  const ingredientsValidArray = useCallback(() => {
+    const getValidIngredients = (str) => Object.entries(resultApiId[0])
+      .filter((entry) => entry[0].includes(str))
+      .filter((entry) => entry[1]);
+    const measure = getValidIngredients('strMeasure');
+    const ingredient = getValidIngredients('strIngredient');
+
+    return ingredient.map((data, index) => ({
+      ingredient: data[1],
+      measure: (measure[index] ? measure[index][1] : ''),
+    }));
+  }, [resultApiId]);
+
   useEffect(() => {
     if (!isFirstRender.current) renderRoute();
     else isFirstRender.current = false;
@@ -147,6 +160,7 @@ function RecipesProvider({ children }) {
     setDataCategory,
     filterByCategory,
     handleAllRecipes,
+    ingredientsValidArray,
     handleMealsRequisition,
     handleDrinksRequisition,
     handleCategoryRequisition,
@@ -165,6 +179,7 @@ function RecipesProvider({ children }) {
     setDataCategory,
     filterByCategory,
     handleAllRecipes,
+    ingredientsValidArray,
     handleMealsRequisition,
     handleDrinksRequisition,
     handleCategoryRequisition,

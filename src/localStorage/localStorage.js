@@ -23,3 +23,11 @@ export const getLocalStorageFavorite = (key) => {
   const resultLocalStorage = JSON.parse(localStorage.getItem(key));
   return resultLocalStorage || [];
 };
+
+export const setLocalStorageInProgressRecipes = (key, value) => {
+  if (!JSON.parse(localStorage.getItem(key))) {
+    localStorage.setItem(key, JSON.stringify({ value }));
+  } else {
+    return '';
+  }
+};

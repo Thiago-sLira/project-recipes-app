@@ -14,35 +14,46 @@ const copy = require('clipboard-copy');
 
 const SIX = 6;
 function RecipeDetails() {
-  const { fetchId, resultApiId } = useContext(RecipesContext);
+  const { fetchId, resultApiId, ingredientsValidArray } = useContext(RecipesContext);
   const { fetchRecomendationApi, dataRecomendation } = useRecomendationFetch();
   const [ingredientsValid, setIngredientsValid] = useState([]);
   const [isCopied, setIsCopied] = useState('');
   const [isClicked, setIsClicked] = useState(false);
-  const [recipeDone, setRecipeDone] = useState(false);
+  const [recipeDone, setRecipeDone] = useState(false); // lembrar de mudar para false
+  const [recipeInProgress, setRecipeInProgress] = useState(false);
   const [recomendations, setRecomendations] = useState([]);
   const params = useParams();
   const history = useHistory();
+  const actualPath = history.location.pathname;
 
   const getDoneRecipes = useCallback(() => {
-    const mockDoneRecipes = [{
-      id: 'id-da-receita',
-      type: 'meal-ou-drink',
-      nationality: 'nacionalidade-da-receita-ou-texto-vazio',
-      category: 'categoria-da-receita-ou-texto-vazio',
-      alcoholicOrNot: 'alcoholic-ou-non-alcoholic-ou-texto-vazio',
-      name: 'nome-da-receita',
-      image: 'imagem-da-receita',
-      doneDate: 'quando-a-receita-foi-concluida',
-      tags: 'array-de-tags-da-receita-ou-array-vazio',
-    }];
-    // const recipesDoneStorage = getLocalStorageDoneRecipes(doneRecipes);
-    const recipesDoneStorage = mockDoneRecipes;
-    if (recipesDoneStorage.some((r) => r.id.includes(resultApiId.id))) {
+    const localDoneRecipes = JSON.parse(localStorage.getItem('doneRecipes'));
+    if (!localDoneRecipes) {
       setRecipeDone(true);
+    } else {
+      setRecipeDone(!localDoneRecipes.some((r) => r.id.includes(params.id)));
     }
   }, [resultApiId.id]);
 
+  const getInProgressRecipe = () => {
+    const localInProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    const key = history.location.pathname.split('/')[1];
+    if (localInProgressRecipes && localInProgressRecipes[key]) {
+      if (localInProgressRecipes[key][params.id]) {
+        setRecipeInProgress(true);
+      } else {
+        setRecipeInProgress(false);
+      }
+    } else {
+      setRecipeInProgress(false);
+    }
+  };
+
+  const handleButton = ({ target }) => {
+    if (target.innerText === 'Start Recipe') {
+      history.push(`${actualPath}/in-progress`);
+    }
+  };
   useEffect(() => {
     const route = dataRecomendation.meals || dataRecomendation.drinks;
     if (route) {
@@ -61,6 +72,7 @@ function RecipeDetails() {
 
   useEffect(() => {
     getDoneRecipes();
+    getInProgressRecipe();
     fetchId(params.id);
     const returnLocalStorage = getLocalStorageFavorite('favoriteRecipes');
     const findLocalStorage = returnLocalStorage.find((recipe) => recipe.id === params.id);
@@ -68,20 +80,6 @@ function RecipeDetails() {
       setIsClicked(true);
     }
   }, [history.location.pathname, fetchId, getDoneRecipes, params.id]);
-
-  const getValidIngredients = useCallback((str) => Object.entries(resultApiId[0])
-    .filter((entry) => entry[0].includes(str))
-    .filter((entry) => entry[1]), [resultApiId]);
-
-  const ingredientsValidArray = useCallback(() => {
-    const measure = getValidIngredients('strMeasure');
-    const ingredient = getValidIngredients('strIngredient');
-
-    return ingredient.map((data, index) => ({
-      ingredient: data[1],
-      measure: (measure[index] ? measure[index][1] : ''),
-    }));
-  }, [getValidIngredients]);
 
   useEffect(() => {
     if (resultApiId.length > 0) {
@@ -190,9 +188,10 @@ function RecipeDetails() {
               type="button"
               data-testid="start-recipe-btn"
               className="start-recipe-btn"
-              // onClick={ getDoneRecipes }
+              onClick={ handleButton }
+              // onClick={ () => history.push(`${actualPath}/in-progress`) }
             >
-              Start Recipe
+              {recipeInProgress ? 'Continue Recipe' : 'Start Recipe'}
             </Button>
           )}
         </div>
