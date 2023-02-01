@@ -9,7 +9,7 @@ import whiteHeartIcon from '../images/whiteHeartIcon.svg';
 import blackHeartIcon from '../images/blackHeartIcon.svg';
 import useRecomendationFetch from '../hooks/useRecomendationFetch';
 import { setLocalStorage, getLocalStorageFavorite } from '../localStorage/localStorage';
-import RecipeCard from './RecipeCard';
+import RecomendationCard from './RecomendationCard';
 
 const copy = require('clipboard-copy');
 
@@ -206,7 +206,7 @@ function RecipeDetails() {
         <Slider { ...settings }>
           { recomendations.length > 0 && (
             recomendations.map((recipe, index) => (
-              <RecipeCard
+              <RecomendationCard
                 key={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
                 recipe={ recipe }
                 index={ index }

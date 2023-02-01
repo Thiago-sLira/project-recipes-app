@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 
 function RecomendationCard({ recipe, index, pathname, id, width }) {
   return (
-    <li
+    <div
       data-testid={ `${index}-recommendation-card` }
+    //   data-testid="recommendation-card"
     >
       <Link
         to={ `${pathname}/${id}` }
@@ -21,7 +22,7 @@ function RecomendationCard({ recipe, index, pathname, id, width }) {
           }
         </p>
       </Link>
-    </li>
+    </div>
   );
 }
 
