@@ -40,14 +40,6 @@ function RecipesProvider({ children }) {
     }
   }, [history.location.pathname]);
 
-  // useEffect(() => {
-  //   if (history.location.pathname.includes('meals')) {
-  //     setResultApiId(dados.meals ? dados.meals : []);
-  //   } if (history.location.pathname.includes('drinks')) {
-  //     setResultApiId(dados.drinks ? dados.drinks : []);
-  //   }
-  // }, [dados, history.location.pathname]);
-
   const handleMealsRequisition = useCallback((searchField) => {
     const linkIngredient = `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchField.searchInput}`;
     const linkName = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchField.searchInput}`;

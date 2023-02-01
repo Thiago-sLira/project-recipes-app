@@ -1,8 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, useCallback } from 'react';
 import { Button } from 'react-bootstrap';
 import { useHistory, useParams } from 'react-router-dom';
-import Slider from 'react-slick';
 import RecipesContext from '../context/RecipesContext';
 import shareIcon from '../images/shareIcon.svg';
 import whiteHeartIcon from '../images/whiteHeartIcon.svg';
@@ -13,9 +11,6 @@ import RecomendationCard from './RecomendationCard';
 
 const copy = require('clipboard-copy');
 
-const settings = {
-  dots: true, infinite: true, speed: 500, slidesToShow: 2, slidesToScroll: 2,
-};
 const SIX = 6;
 function RecipeDetails() {
   const { fetchId, resultApiId } = useContext(RecipesContext);
@@ -28,24 +23,24 @@ function RecipeDetails() {
   const params = useParams();
   const history = useHistory();
 
-  const mockDoneRecipes = [{
-    id: 'id-da-receita',
-    type: 'meal-ou-drink',
-    nationality: 'nacionalidade-da-receita-ou-texto-vazio',
-    category: 'categoria-da-receita-ou-texto-vazio',
-    alcoholicOrNot: 'alcoholic-ou-non-alcoholic-ou-texto-vazio',
-    name: 'nome-da-receita',
-    image: 'imagem-da-receita',
-    doneDate: 'quando-a-receita-foi-concluida',
-    tags: 'array-de-tags-da-receita-ou-array-vazio',
-  }];
-  const getDoneRecipes = () => {
+  const getDoneRecipes = useCallback(() => {
+    const mockDoneRecipes = [{
+      id: 'id-da-receita',
+      type: 'meal-ou-drink',
+      nationality: 'nacionalidade-da-receita-ou-texto-vazio',
+      category: 'categoria-da-receita-ou-texto-vazio',
+      alcoholicOrNot: 'alcoholic-ou-non-alcoholic-ou-texto-vazio',
+      name: 'nome-da-receita',
+      image: 'imagem-da-receita',
+      doneDate: 'quando-a-receita-foi-concluida',
+      tags: 'array-de-tags-da-receita-ou-array-vazio',
+    }];
     // const recipesDoneStorage = getLocalStorageDoneRecipes(doneRecipes);
     const recipesDoneStorage = mockDoneRecipes;
     if (recipesDoneStorage.some((r) => r.id.includes(resultApiId.id))) {
       setRecipeDone(true);
     }
-  };
+  }, [resultApiId.id]);
 
   useEffect(() => {
     const route = dataRecomendation.meals || dataRecomendation.drinks;
@@ -61,7 +56,7 @@ function RecipeDetails() {
     } else {
       fetchRecomendationApi('https://www.themealdb.com/api/json/v1/1/search.php?s=');
     }
-  }, [history.location.pathname]);
+  }, [history.location.pathname, fetchRecomendationApi]);
 
   useEffect(() => {
     getDoneRecipes();
@@ -71,13 +66,13 @@ function RecipeDetails() {
     if (findLocalStorage) {
       setIsClicked(true);
     }
-  }, [history.location.pathname]);
+  }, [history.location.pathname, fetchId, getDoneRecipes, params.id]);
 
-  const getValidIngredients = (str) => Object.entries(resultApiId[0])
+  const getValidIngredients = useCallback((str) => Object.entries(resultApiId[0])
     .filter((entry) => entry[0].includes(str))
-    .filter((entry) => entry[1]);
+    .filter((entry) => entry[1]), [resultApiId]);
 
-  const ingredientsValidArray = () => {
+  const ingredientsValidArray = useCallback(() => {
     const measure = getValidIngredients('strMeasure');
     const ingredient = getValidIngredients('strIngredient');
 
@@ -85,14 +80,14 @@ function RecipeDetails() {
       ingredient: data[1],
       measure: (measure[index] ? measure[index][1] : ''),
     }));
-  };
+  }, [getValidIngredients]);
 
   useEffect(() => {
     if (resultApiId.length > 0) {
       setIngredientsValid(ingredientsValidArray());
       ingredientsValidArray();
     }
-  }, [resultApiId]);
+  }, [resultApiId, ingredientsValidArray]);
 
   const shareButtonClick = () => {
     copy(`http://localhost:3000${history.location.pathname}`);
@@ -203,21 +198,19 @@ function RecipeDetails() {
       )}
       <section>
         <h2>Recomendations</h2>
-        <Slider { ...settings }>
-          { recomendations.length > 0 && (
-            recomendations.map((recipe, index) => (
-              <RecomendationCard
-                key={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
-                recipe={ recipe }
-                index={ index }
-                pathname={ history.location.pathname.includes('meals')
-                  ? '/drinks' : '/meals' }
-                id={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
-                width="150px"
-              />
-            ))
-          )}
-        </Slider>
+        { recomendations.length > 0 && (
+          recomendations.map((recipe, index) => (
+            <RecomendationCard
+              key={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
+              recipe={ recipe }
+              index={ index }
+              pathname={ history.location.pathname.includes('meals')
+                ? '/drinks' : '/meals' }
+              id={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
+              width="150px"
+            />
+          ))
+        )}
       </section>
     </div>
   );

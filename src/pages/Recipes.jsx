@@ -5,7 +5,7 @@ import RecipesContext from '../context/RecipesContext';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Filter from '../components/Categories';
-import RecomendationCard from '../components/RecomendationCard';
+import RecipeCard from '../components/RecipeCard';
 
 const NUMBER_TWELVE = 12;
 function Recipes() {
@@ -46,7 +46,7 @@ function Recipes() {
       <ul>
         { recipes.length > 0 && (
           recipes.map((recipe, index) => (
-            <RecomendationCard
+            <RecipeCard
               key={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
               recipe={ recipe }
               index={ index }
