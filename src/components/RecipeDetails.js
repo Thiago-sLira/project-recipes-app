@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useContext, useState, useCallback } from 'react';
 import { Button } from 'react-bootstrap';
 import { useHistory, useParams } from 'react-router-dom';
@@ -56,7 +57,7 @@ function RecipeDetails() {
     } else {
       fetchRecomendationApi('https://www.themealdb.com/api/json/v1/1/search.php?s=');
     }
-  }, [history.location.pathname, fetchRecomendationApi]);
+  }, [history.location.pathname]);
 
   useEffect(() => {
     getDoneRecipes();
