@@ -16,3 +16,11 @@ code {
   position: fixed;
   bottom: 0;
 }
+.start-recipe-btn {
+  position: fixed;
+  bottom: 0;
+}
+.ingredientUsed {
+  text-decoration: line-through solid rgb(0, 0, 0);
+}
+
