@@ -142,6 +142,34 @@ function RecipesProvider({ children }) {
     else isFirstRender.current = false;
   }, [dados, renderRoute]);
 
+  const handleFinishRecipeClick = useCallback(() => {
+    const doneLocalStorage = JSON.parse(localStorage.getItem('doneRecipes'));
+    // const dateCool = new Date().toUTCString();
+    // const dateUsed = new Date().toLocaleDateString();
+    const dateUsed = new Date().toISOString();
+    const doneRecipe = {
+      id: (resultApiId[0].idMeal ? resultApiId[0].idMeal : resultApiId[0].idDrink),
+      type: (history.location.pathname.includes('meals') ? 'meal' : 'drink'),
+      nationality: (resultApiId[0].strArea ? resultApiId[0].strArea : ''),
+      category: (resultApiId[0].strCategory ? resultApiId[0].strCategory : ''),
+      alcoholicOrNot: (resultApiId[0].strAlcoholic ? resultApiId[0].strAlcoholic : ''),
+      name: (resultApiId[0].strMeal ? resultApiId[0].strMeal : resultApiId[0].strDrink),
+      image: (resultApiId[0].strMealThumb
+        ? resultApiId[0].strMealThumb : resultApiId[0].strDrinkThumb),
+      doneDate: dateUsed,
+      tags: resultApiId[0].strTags ? resultApiId[0].strTags.split(',') : [],
+    };
+    if (doneLocalStorage) {
+      localStorage.setItem(
+        'doneRecipes',
+        JSON.stringify([...doneLocalStorage, doneRecipe]),
+      );
+    } else {
+      localStorage.setItem('doneRecipes', JSON.stringify([doneRecipe]));
+    }
+    history.push('/done-recipes');
+  }, [resultApiId, history]);
+
   const values = useMemo(() => ({
     erro,
     dados,
@@ -163,6 +191,7 @@ function RecipesProvider({ children }) {
     ingredientsValidArray,
     handleMealsRequisition,
     handleDrinksRequisition,
+    handleFinishRecipeClick,
     handleCategoryRequisition,
   }), [
     erro,
@@ -181,6 +210,7 @@ function RecipesProvider({ children }) {
     handleAllRecipes,
     ingredientsValidArray,
     handleMealsRequisition,
+    handleFinishRecipeClick,
     handleDrinksRequisition,
     handleCategoryRequisition,
   ]);
