@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import { useHistory, useParams } from 'react-router-dom';
@@ -10,11 +11,15 @@ import { setLocalStorage, getLocalStorageFavorite } from '../localStorage/localS
 const copy = require('clipboard-copy');
 
 function RecipeDetailsCard() {
-  const { fetchId, resultApiId, ingredientsValidArray } = useContext(RecipesContext);
+  const {
+    fetchId, resultApiId, ingredientsValidArray, handleFinishRecipeClick,
+  } = useContext(RecipesContext);
   const [ingredientsValid, setIngredientsValid] = useState([]);
   const [isCopied, setIsCopied] = useState('');
   const [isClicked, setIsClicked] = useState(false);
-  const [checkbox, setCheckbox] = useState({ 1: false });
+  const [checkbox, setCheckbox] = useState({});
+  const [actualInput, setActualInput] = useState(0);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const history = useHistory();
   const params = useParams();
 
@@ -23,7 +28,61 @@ function RecipeDetailsCard() {
       ...checkbox,
       [name]: checked,
     });
+    setActualInput(name);
   };
+
+  useEffect(() => {
+    const key = history.location.pathname.split('/')[1];
+    const defaultInProgress = { meals: {}, drinks: {} };
+    const localInProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'))
+    || defaultInProgress;
+    if (checkbox[actualInput]) {
+      const objeto = {
+        ...localInProgressRecipes,
+        [key]: {
+          ...localInProgressRecipes[key],
+          [params.id]: [...localInProgressRecipes[key][params.id], actualInput],
+        },
+      };
+      localStorage.setItem('inProgressRecipes', JSON.stringify(objeto));
+    } else if (localInProgressRecipes[key][params.id] && !checkbox[actualInput]) {
+      const ingredientsUsed = localInProgressRecipes[key][params.id]
+        .filter((ingredient) => ingredient !== actualInput);
+      localStorage.setItem('inProgressRecipes', JSON.stringify({
+        ...localInProgressRecipes,
+        [key]: {
+          [params.id]: ingredientsUsed,
+        },
+      }));
+    } else {
+      localStorage.setItem('inProgressRecipes', JSON.stringify({
+        ...localInProgressRecipes,
+        [key]: {
+          [params.id]: [],
+        },
+      }));
+    }
+    setIsButtonDisabled(Object.values(checkbox).some((index) => index === false));
+  }, [actualInput, checkbox]);
+
+  useEffect(() => {
+    const localInProgressRecipes = JSON
+      .parse(localStorage.getItem('inProgressRecipes')) || {};
+    const key = history.location.pathname.split('/')[1];
+    if (ingredientsValid.length > 0) {
+      const inicialObj = {};
+      const reduceArrayCheckBox = ingredientsValid
+        .reduce((_acumulator, _current, index) => {
+          if (localInProgressRecipes[key][params.id].some((e) => +(e) === (index + 1))) {
+            inicialObj[index + 1] = true;
+          } else {
+            inicialObj[index + 1] = false;
+          }
+          return inicialObj;
+        }, {});
+      setCheckbox(reduceArrayCheckBox);
+    }
+  }, [ingredientsValid]);
 
   useEffect(() => {
     fetchId(params.id);
@@ -35,7 +94,7 @@ function RecipeDetailsCard() {
   }, [fetchId, params.id]);
 
   const shareButtonClick = () => {
-    copy(`http://localhost:3000${history.location.pathname}`);
+    copy(`http://localhost:3000${history.location.pathname.replace('/in-progress', '')}`);
     setIsCopied('Link copied!');
   };
 
@@ -144,7 +203,8 @@ function RecipeDetailsCard() {
             type="button"
             data-testid="finish-recipe-btn"
             className="finish-recipe-btn"
-            disabled
+            disabled={ isButtonDisabled }
+            onClick={ handleFinishRecipeClick }
           >
             Finish Recipe
           </Button>
