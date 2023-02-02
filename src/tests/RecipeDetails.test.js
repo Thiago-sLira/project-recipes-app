@@ -1,7 +1,6 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 import renderWithRouter from './helpers/renderWithRouter';
 import App from '../App';
 import meals from '../../cypress/mocks/meals';
@@ -13,7 +12,10 @@ import { doneRecipe, favoriteRecipe } from './mocks/localStorage';
 const routeMeals = ['/meals/52771'];
 const routeDrinks = ['/drinks/178319'];
 const whiteHeartIcon = 'whiteHeartIcon.svg';
+const blackHeartIcon = 'blackHeartIcon.svg';
+const favoriteBtn = 'favorite-btn';
 describe('Testes para a page RecipeDetails de acordo com cada rota', () => {
+  navigator.clipboard = { writeText: jest.fn() };
   test('Se a requisição retornar um erro, o erro é mostrado na tela na rota "/drinks/178319"', () => {
     global.fetch = jest.fn().mockResolvedValue({
       json: (new Error()),
@@ -56,11 +58,11 @@ describe('Testes para a page RecipeDetails de acordo com cada rota', () => {
     renderWithRouter(<App />, { initialEntries: routeMeals });
     expect(fetch).toHaveBeenCalledTimes(2);
 
-    const favoriteButton = await screen.findByTestId('favorite-btn');
+    const favoriteButton = await screen.findByTestId(favoriteBtn);
     expect(favoriteButton).toBeInTheDocument();
     expect(favoriteButton).toHaveAttribute('src', whiteHeartIcon);
     userEvent.click(favoriteButton);
-    expect(favoriteButton).toHaveAttribute('src', 'blackHeartIcon.svg');
+    expect(favoriteButton).toHaveAttribute('src', blackHeartIcon);
     userEvent.click(favoriteButton);
     expect(favoriteButton).toHaveAttribute('src', whiteHeartIcon);
   });
@@ -90,24 +92,19 @@ describe('Testes para a page RecipeDetails de acordo com cada rota', () => {
       .mockResolvedValue({
         json: jest.fn().mockResolvedValue(oneMeal),
       });
-
-    renderWithRouter(<App />, { initialEntries: routeMeals });
+    const { history } = renderWithRouter(<App />, { initialEntries: routeMeals });
     expect(fetch).toHaveBeenCalledTimes(2);
 
     const startRecipeButton = await screen.findByTestId('start-recipe-btn');
     expect(startRecipeButton).toBeInTheDocument();
     expect(startRecipeButton.innerHTML).toBe('Start Recipe');
+    expect(startRecipeButton).toBeEnabled();
 
-    await act(async () => {
-      userEvent.click(startRecipeButton);
+    userEvent.click(startRecipeButton);
+
+    await waitFor(() => {
+      expect(history.location.pathname).toBe('/meals/52771/in-progress');
     });
-
-    // expect(history.location.pathname).toBe('/meals/52771/in-progress');
-    // console.log(history.location.pathname);
-    // await waitFor(async () => {
-    //   const finishButton = screen.getByTestId('finish-recipe-btn');
-    //   expect(finishButton).toBeDisabled();
-    // });
   });
   test('Se a receita já estiver em andamento, com ingredientes usados, renderiza o botão Continue Recipes', async () => {
     jest.spyOn(global, 'fetch')
@@ -125,8 +122,8 @@ describe('Testes para a page RecipeDetails de acordo com cada rota', () => {
     renderWithRouter(<App />, { initialEntries: routeMeals });
     expect(fetch).toHaveBeenCalledTimes(2);
     const continueRecipeButton = await screen.findByText(/Continue Recipe/i);
-    userEvent.click(continueRecipeButton);
     expect(continueRecipeButton).toBeInTheDocument();
+    userEvent.click(continueRecipeButton);
   });
   test('Se a receita já estiver em andamento, renderiza o botão Continue Recipes', async () => {
     jest.spyOn(global, 'fetch')
@@ -184,15 +181,31 @@ describe('Testes para a page RecipeDetails de acordo com cada rota', () => {
       .mockResolvedValueOnce({
         json: jest.fn().mockResolvedValue(oneMeal),
       });
-    // window.clipboard = {
-    //   writeText: jest.fn(),
-    // };
-    // window.document.execCommand = jest.fn(window.clipboard);
 
     renderWithRouter(<App />, { initialEntries: routeMeals });
 
-    // const shareButton = await screen.findByRole('button', { name: /shareicon/i });
-    // expect(shareButton).toBeInTheDocument();
-    // userEvent.setup(shareButton);
+    const shareButton = await screen.findByRole('button', { name: /shareicon/i });
+    expect(shareButton).toBeInTheDocument();
+    userEvent.click(shareButton);
+  });
+  test('Se ao clicar no botão de favoritar, a receita é favoritada corretamente e vice versa', async () => {
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({
+        json: jest.fn().mockResolvedValue(meals),
+      })
+      .mockResolvedValueOnce({
+        json: jest.fn().mockResolvedValue(oneDrink),
+      });
+
+    renderWithRouter(<App />, { initialEntries: routeDrinks });
+    expect(fetch).toHaveBeenCalledTimes(2);
+
+    const favoriteButton = await screen.findByTestId(favoriteBtn);
+    expect(favoriteButton).toBeInTheDocument();
+    expect(favoriteButton).toHaveAttribute('src', whiteHeartIcon);
+    userEvent.click(favoriteButton);
+    expect(favoriteButton).toHaveAttribute('src', blackHeartIcon);
+    userEvent.click(favoriteButton);
+    expect(favoriteButton).toHaveAttribute('src', whiteHeartIcon);
   });
 });

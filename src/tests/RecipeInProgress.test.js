@@ -6,9 +6,12 @@ import drinks from '../../cypress/mocks/drinks';
 import meals from '../../cypress/mocks/meals';
 
 import App from '../App';
+import oneMeal from '../../cypress/mocks/oneMeal';
 
 const btnFinishRecipe = 'finish-recipe-btn';
-
+const routeMeals = ['/meals/52771'];
+const whiteHeartIcon = 'whiteHeartIcon.svg';
+const favoriteBtn = 'favorite-btn';
 describe('Testes para o componente RecipeDetails', () => {
   test('Testa se os elemento drinks aparece na tela', async () => {
     jest.spyOn(global, 'fetch')
@@ -29,7 +32,7 @@ describe('Testes para o componente RecipeDetails', () => {
     await act(async () => {
       history.push('/drinks/15997/in-progress/');
     });
-    const favoriteBtnDrink = screen.getByTestId('favorite-btn');
+    const favoriteBtnDrink = screen.getByTestId(favoriteBtn);
     userEvent.click(favoriteBtnDrink);
   });
   test('Testa se os elemento meals aparece na tela', async () => {
@@ -51,7 +54,7 @@ describe('Testes para o componente RecipeDetails', () => {
     await act(async () => {
       history.push('/meals/53049/in-progress/');
     });
-    const favoriteBtnMeal = screen.getByTestId('favorite-btn');
+    const favoriteBtnMeal = screen.getByTestId(favoriteBtn);
     userEvent.click(favoriteBtnMeal);
   });
   test('Testa botão checkbox na Drink', async () => {
@@ -75,5 +78,25 @@ describe('Testes para o componente RecipeDetails', () => {
     await act(async () => {
       history.push('/done-recipes');
     });
+  });
+  test('Se ao clicar no botão de favoritar, a receita é favoritada corretamente e vice versa', async () => {
+    jest.spyOn(global, 'fetch')
+      .mockResolvedValueOnce({
+        json: jest.fn().mockResolvedValue(drinks),
+      })
+      .mockResolvedValueOnce({
+        json: jest.fn().mockResolvedValue(oneMeal),
+      });
+
+    renderWithRouter(<App />, { initialEntries: routeMeals });
+    expect(fetch).toHaveBeenCalledTimes(2);
+
+    const favoriteButton = await screen.findByTestId(favoriteBtn);
+    expect(favoriteButton).toBeInTheDocument();
+    expect(favoriteButton).toHaveAttribute('src', whiteHeartIcon);
+    userEvent.click(favoriteButton);
+    expect(favoriteButton).toHaveAttribute('src', 'blackHeartIcon.svg');
+    userEvent.click(favoriteButton);
+    expect(favoriteButton).toHaveAttribute('src', whiteHeartIcon);
   });
 });
