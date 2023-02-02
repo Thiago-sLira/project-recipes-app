@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect, useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import { useHistory, useParams } from 'react-router-dom';
@@ -10,7 +11,9 @@ import { setLocalStorage, getLocalStorageFavorite } from '../localStorage/localS
 const copy = require('clipboard-copy');
 
 function RecipeDetailsCard() {
-  const { fetchId, resultApiId, ingredientsValidArray } = useContext(RecipesContext);
+  const {
+    fetchId, resultApiId, ingredientsValidArray, handleFinishRecipeClick,
+  } = useContext(RecipesContext);
   const [ingredientsValid, setIngredientsValid] = useState([]);
   const [isCopied, setIsCopied] = useState('');
   const [isClicked, setIsClicked] = useState(false);
@@ -125,10 +128,6 @@ function RecipeDetailsCard() {
     }
   }, [resultApiId, ingredientsValidArray]);
 
-  const finishRecipeClick = () => {
-    history.push('/done-recipes');
-  };
-
   return (
     <div>
       {resultApiId.length > 0 && (
@@ -205,7 +204,7 @@ function RecipeDetailsCard() {
             data-testid="finish-recipe-btn"
             className="finish-recipe-btn"
             disabled={ isButtonDisabled }
-            onClick={ finishRecipeClick }
+            onClick={ handleFinishRecipeClick }
           >
             Finish Recipe
           </Button>
