@@ -50,7 +50,7 @@ function RecipeDetails() {
   };
 
   const handleButton = ({ target }) => {
-    if (target.innerText === 'Start Recipe') {
+    if (target.innerText === 'Start Recipe' || target.innerText === 'Continue Recipe') {
       history.push(`${actualPath}/in-progress`);
     }
   };
@@ -189,7 +189,6 @@ function RecipeDetails() {
               data-testid="start-recipe-btn"
               className="start-recipe-btn"
               onClick={ handleButton }
-              // onClick={ () => history.push(`${actualPath}/in-progress`) }
             >
               {recipeInProgress ? 'Continue Recipe' : 'Start Recipe'}
             </Button>
