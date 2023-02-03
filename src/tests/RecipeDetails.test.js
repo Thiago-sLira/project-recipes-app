@@ -197,6 +197,8 @@ describe('Testes para a page RecipeDetails de acordo com cada rota', () => {
         json: jest.fn().mockResolvedValue(oneDrink),
       });
 
+    window.localStorage.clear();
+
     renderWithRouter(<App />, { initialEntries: routeDrinks });
     expect(fetch).toHaveBeenCalledTimes(2);
 

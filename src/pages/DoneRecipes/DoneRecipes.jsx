@@ -15,7 +15,6 @@ function DoneRecipes() {
     if (storageRecipesDone) {
       setRecipesDone(storageRecipesDone);
       setRecipesDoneOrigin(storageRecipesDone);
-      console.log(storageRecipesDone);
     }
   }, []);
 
