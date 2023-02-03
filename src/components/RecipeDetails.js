@@ -49,10 +49,8 @@ function RecipeDetails() {
     }
   };
 
-  const handleButton = ({ target }) => {
-    if (target.innerText === 'Start Recipe' || target.innerText === 'Continue Recipe') {
-      history.push(`${actualPath}/in-progress`);
-    }
+  const handleButton = () => {
+    history.push(`${actualPath}/in-progress`);
   };
   useEffect(() => {
     const route = dataRecomendation.meals || dataRecomendation.drinks;

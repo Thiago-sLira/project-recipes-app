@@ -24,10 +24,10 @@ export const getLocalStorageFavorite = (key) => {
   return resultLocalStorage || [];
 };
 
-export const setLocalStorageInProgressRecipes = (key, value) => {
-  if (!JSON.parse(localStorage.getItem(key))) {
-    localStorage.setItem(key, JSON.stringify({ value }));
-  } else {
-    return '';
-  }
-};
+// export const setLocalStorageInProgressRecipes = (key, value) => {
+//   if (!JSON.parse(localStorage.getItem(key))) {
+//     localStorage.setItem(key, JSON.stringify({ value }));
+//   } else {
+//     return '';
+//   }
+// };
