@@ -7,7 +7,7 @@ import meals from '../../cypress/mocks/meals';
 import drinks from '../../cypress/mocks/drinkCategories';
 import oneMeal from '../../cypress/mocks/oneMeal';
 import oneDrink from '../../cypress/mocks/oneDrink';
-import { doneRecipe, favoriteRecipe } from './mocks/localStorage';
+import { doneRecipes, favoriteRecipe } from './mocks/localStorage';
 
 const routeMeals = ['/meals/52771'];
 const routeDrinks = ['/drinks/178319'];
@@ -168,7 +168,7 @@ describe('Testes para a page RecipeDetails de acordo com cada rota', () => {
         json: jest.fn().mockResolvedValue(oneMeal),
       });
 
-    window.localStorage.setItem('doneRecipes', JSON.stringify(doneRecipe));
+    window.localStorage.setItem('doneRecipes', JSON.stringify(doneRecipes));
     renderWithRouter(<App />, { initialEntries: routeMeals });
 
     expect(screen.queryByTestId('start-recipe-btn')).not.toBeInTheDocument();
@@ -196,6 +196,8 @@ describe('Testes para a page RecipeDetails de acordo com cada rota', () => {
       .mockResolvedValueOnce({
         json: jest.fn().mockResolvedValue(oneDrink),
       });
+
+    window.localStorage.clear();
 
     renderWithRouter(<App />, { initialEntries: routeDrinks });
     expect(fetch).toHaveBeenCalledTimes(2);

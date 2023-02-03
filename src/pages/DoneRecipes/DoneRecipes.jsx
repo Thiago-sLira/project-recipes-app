@@ -1,75 +1,118 @@
 import React, { useEffect, useState } from 'react';
+import { Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
+import shareIcon from '../../images/shareIcon.svg';
+
+const copy = require('clipboard-copy');
 
 function DoneRecipes() {
-  const [nameRecipes, setNameRecipes] = useState([]);
+  const [recipesDone, setRecipesDone] = useState([]);
+  const [recipesDoneOrigin, setRecipesDoneOrigin] = useState([]);
+  const [isCopied, setIsCopied] = useState(false);
   useEffect(() => {
-    const test = JSON.parse(localStorage.getItem('doneRecipes'));
-    if (test) {
-      setNameRecipes(test);
+    const storageRecipesDone = JSON.parse(localStorage.getItem('doneRecipes'));
+    if (storageRecipesDone) {
+      setRecipesDone(storageRecipesDone);
+      setRecipesDoneOrigin(storageRecipesDone);
     }
   }, []);
-  /*  const {
-    removeFilter, filterMeal, filterDrink, share,
-  } = useContext(RecipesContext);
- */
-  // const history = useHistory();
-  const share = () => {
-    console.log('oi');
+
+  const filterByTypeButton = ({ target: { name } }) => {
+    if (name === 'All') {
+      setRecipesDone(recipesDoneOrigin);
+    } else {
+      const filteredRecipes = recipesDoneOrigin.filter(({ type }) => type === name);
+      setRecipesDone(filteredRecipes);
+    }
+  };
+
+  const shareButtonClick = (type, id) => {
+    copy(`http://localhost:3000/${type}s/${id}`);
+    setIsCopied(true);
   };
 
   return (
     <div>
       <Header mainPage={ false } title="Done Recipes" />
+      <h4>{isCopied ? 'Link copied!' : ''}</h4>
       <button
         type="button"
         data-testid="filter-by-all-btn"
-        // onClick={ () => removeFilter(history.location.pathname) }
+        name="All"
+        onClick={ filterByTypeButton }
       >
         All
       </button>
       <button
         type="button"
         data-testid="filter-by-meal-btn"
-        // onClick={ () => filterMeal(history.location.pathname) }
+        name="meal"
+        onClick={ filterByTypeButton }
       >
         Meals
       </button>
       <button
         type="button"
         data-testid="filter-by-drink-btn"
-        // onClick={ () => filterDrink(history.location.pathname) }
+        name="drink"
+        onClick={ filterByTypeButton }
       >
         Drinks
       </button>
-      <section>
-        { nameRecipes.length > 0 && (nameRecipes.map((item, index) => (
-          <div key={ index }>
-            <img
-              src=""
-              alt="imageCardRecipe"
-              data-testid={ `${index}-horizontal-image` }
-            />
-            <p data-testid={ `${index}-horizontal-top-text` }>
-              { `${item.nationality} - ${item.category}` }
-            </p>
-            <p data-testid={ `${index}-horizontal-name` } />
-            <p data-testid={ `${index}-horizontal-done-date` } />
-            { item.tags.map((tag) => (
-              <p key={ tag } data-testid={ `${index}-${tag}-horizontal-tag` } />
-            )) }
-            <button
-              onClick={ share }
+      <br />
+      <ul>
+        { recipesDone.length > 0
+        && (recipesDone.map(({
+          image, category, name, nationality, tags, doneDate, type, id, alcoholicOrNot,
+        }, index) => (
+          <li key={ index }>
+            <Link
+              to={ `${type}s/${id}` }
             >
               <img
-                src="src/images/shareIcon.svg"
-                alt="button"
-                data-testid={ `${index}-horizontal-share-btn` }
+                src={ image }
+                alt="imageCardRecipe"
+                data-testid={ `${index}-horizontal-image` }
+                width="150px"
               />
-            </button>
-          </div>
+            </Link>
+            { type === 'meal' ? (
+              <p data-testid={ `${index}-horizontal-top-text` }>
+                { `${nationality} - ${category}` }
+              </p>
+            ) : (
+              <p data-testid={ `${index}-horizontal-top-text` }>
+                { alcoholicOrNot }
+              </p>
+            )}
+            <Link
+              to={ `${type}s/${id}` }
+            >
+              <p data-testid={ `${index}-horizontal-name` }>
+                { name }
+              </p>
+            </Link>
+            <p data-testid={ `${index}-horizontal-done-date` }>
+              { doneDate }
+            </p>
+            { tags.slice(0, 2).map((tag) => (
+              <p key={ tag } data-testid={ `${index}-${tag}-horizontal-tag` }>
+                { tag }
+              </p>
+            )) }
+            <Button
+              type="button"
+              data-testid={ `${index}-horizontal-share-btn` }
+              className="btn btn-danger"
+              src={ shareIcon }
+              onClick={ () => shareButtonClick(type, id) }
+            >
+              <img src={ shareIcon } alt="shareIcon" />
+            </Button>
+          </li>
         ))) }
-      </section>
+      </ul>
     </div>
   );
 }
