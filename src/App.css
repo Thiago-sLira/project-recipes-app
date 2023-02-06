@@ -230,7 +230,7 @@ body {
   width: 70%;
 }
 
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ * /
   color: #42197f3b;
   opacity: 1; /* Firefox */
   text-align: center;
