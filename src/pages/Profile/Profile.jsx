@@ -20,16 +20,17 @@ function Profile() {
   };
 
   return (
-    <div>
+    <div className="profile-div">
       <Header mainPage={ false } title="Profile" />
-      <h1 data-testid="profile-email">
+      <h2 data-testid="profile-email">
         { localStorageEmail.email }
-      </h1>
+      </h2>
       <section>
         <button
           type="button"
           data-testid="profile-done-btn"
           onClick={ () => history.push('/done-recipes') }
+          className="profile-buttons"
         >
           Done Recipes
         </button>
@@ -37,6 +38,7 @@ function Profile() {
           type="button"
           data-testid="profile-favorite-btn"
           onClick={ () => history.push('/favorite-recipes') }
+          className="profile-buttons"
         >
           Favorite Recipes
         </button>
@@ -44,6 +46,7 @@ function Profile() {
           type="button"
           data-testid="profile-logout-btn"
           onClick={ clearLocalStorage }
+          className="profile-buttons"
         >
           Logout
         </button>

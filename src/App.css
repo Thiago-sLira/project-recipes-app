@@ -1,8 +1,69 @@
+/* stylelint-disable declaration-no-important */
+
+/* stylelint-disable selector-max-specificity */
+.header-bar {
+  background-color: #ffc107;
+  height: 50px;
+}
+
 .profileButton {
-  border-radius: 40%;
+  background-color: #ffc107;
+  background-image: none;
+  border: none;
+  border-radius: 50%;
+  margin-left: 105px;
+  margin-right: 3px;
+  margin-top: 10px;
+}
+
+.searchButton {
+  background-color: #ffc107;
+  background-image: none;
+  border: none;
+  border-radius: 50%;
+  color: #41197f;
+  margin-left: 0;
+  margin-right: 3px;
+}
+
+#p-header {
+  color: #41197f;
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 700;
+  margin-left: 10px;
+}
+
+#header-title {
+  color: #41197f;
+  margin-bottom: 0;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.footer {
+  background-color: #41197f;
+  height: 45px;
+  width: fill-available;
+}
+
+.footer-drinks {
+  background-color: #41197f;
+  border: none;
+  margin-left: 70px;
+  margin-right: 40px;
+  margin-top: 6px;
+}
+
+.footer-meals {
+  background-color: #41197f;
+  border: none;
+  margin-left: 80px;
+  margin-right: 40px;
 }
 
 .container {
+  background: none;
   display: flex;
   max-width: 75vw;
   overflow-x: auto;
@@ -13,77 +74,394 @@
 } */
 
 .item {
-  background-color: white;
+
+  /* background-color: white; */
   margin: 10px;
+  margin-left: 2px;
+  margin-right: 10px;
   padding: 10px;
   width: 50%;
+}/* pagina de login */
+
+#recomended-title {
+  color: #41197f;
+  font-size: medium;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
 }
 
-/* .meals {
-  align-items: center;
-  background: #0fa36b;
-  color: #464646;
-  display: flex;
-  flex-direction: column;
-  font-family: sans-serif;
-  height: 100vh;
+#recomended-link {
+  text-decoration: none;
+}
+
+.recomendation-image {
+  margin-right: 10px;
+}
+
+body {
+
+  /* background-color: black; */
+  background-image: linear-gradient(90deg, white, #8958a347);
+  background-size: cover;
+  text-align: center;
+}
+
+.section-form-login {
   justify-content: center;
+  margin-top: 50px;
+
+  /* background-color: white; */
+}
+
+.title-login {
+  color: #41197f;
+  font-size: 20px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.section-input-login {
+
+  /* background-color: #fcdc36; */
+  margin-top: 25px;
+  text-align: center;
   width: 100%;
 }
 
-.rocksGlass {
-  animation: shake 1s infinite ease;
-  max-height: 80vh;
-} */
-
-/*
-#iceLeft {
-  animation: clink .8s infinite ease;
-  opacity: 0.6;
-  transform-origin: 36px 66px;
+.section-btn-login {
+  margin-top: 10%;
+  text-align: center;
 }
 
-#iceRight {
-  animation: clink .8s .2s infinite ease;
-  opacity: 0.6;
-  transform-origin: 60px 78px;
-}
-*/
-
-/* .meals > .logo {
-  animation: shake 1.5s infinite ease;
-  color: aliceblue;
-  font-family: Montserrat , sans-serif;
-  font-size: 3em;
-  font-weight: 900;
+.btn-login {
+  background-color: #ffc107 ! important;
+  border-color: #ffc107 ! important;
+  border-radius: 5px;
+  color: white;
+  text-transform: uppercase;
+  width: 150px;
 }
 
-@keyframes shake {
-
-  0% {
-    transform: rotate(5deg);
-  }
-
-  50% {
-    transform: rotate(-5deg);
-  }
-
-  100% {
-    transform: rotate(5deg);
-  }
+.btn-login:disabled {
+  background-color: #ffc107;
+  border-color: #ffc107;
+  box-shadow: none;
+  text-transform: uppercase;
+  transition: 600ms;
 }
 
-@keyframes clink {
+#input-email {
+  background-image: none;
+  border: none;
+  border-bottom: 1px solid purple;
+  height: 40px;
+  margin-bottom: 10px;
+}
 
-  0% {
-    transform: rotate(-10deg);
-  }
+#input-password {
+  border: none;
+  border-bottom: 1px solid purple;
+  height: 40px;
+}
 
-  50% {
-    transform: rotate(20deg);
-  }
+.logo-img {
+  margin-left: 85px;
+  margin-top: 25px;
+  width: 200px;
+} /* category */
 
-  100% {
-    transform: rotate(-10deg);
-  }
-} */
+.button-category {
+  background-color: #41197f;
+  border: none;
+  color: #ffc107;
+  font-size: medium;
+  margin: 1%;
+}
+
+.button-all-category {
+  background-color: #41197f;
+  border: none;
+  color: #ffc107;
+  font-size: medium;
+  margin: 1%;
+}
+
+.recipeCard {
+  color: #41197f;
+  font-size: large;
+  font-weight: 700;
+  list-style-type: none;
+  text-align: center;
+  text-decoration: none;
+}
+
+#recipe-name {
+  color: #41197f;
+  text-decoration: none;
+}
+
+#link-name {
+  color: #41197f;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.searchBar {
+  color: #41197f;
+  font-size: medium;
+  position: sticky;
+  text-align: center;
+}
+
+#input-search {
+  background-color: #f9f6fa;
+  border: none;
+  border-radius: 5%;
+  margin-top: 2px;
+  width: 90%;
+}
+
+#searchButton {
+  background-color: #ffc107;
+  border: 3px;
+  color: #41197f;
+  font-weight: 700;
+  width: 70%;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #42197f3b;
+  opacity: 1; /* Firefox */
+  text-align: center;
+}
+
+.profile-div {
+  text-align: center;
+}
+
+.profile-div h2 {
+  background-color: #42197f3b;
+  color: #41197f;
+}
+
+.profile-buttons {
+  background-color: #41197f;
+  border: none;
+  color: #ffc107;
+  font-size: medium;
+  margin: 1%;
+}
+
+.doneRecipesButton {
+  background-color: #41197f;
+  border: none;
+  color: #ffc107;
+  font-size: medium;
+  margin: 1%;
+  text-align: center;
+}
+
+.doneRecipes-div {
+  text-align: center;
+}
+
+.doneRecipes-div ul {
+  list-style: none;
+  text-decoration: none;
+}
+
+.doneRecipes-div li {
+  margin-left: 4px;
+}
+
+.doneRecipes-div p {
+  color: #41197f;
+  text-decoration: none;
+}
+
+.doneRecipes-div a {
+  color: #41197f;
+  text-decoration: none;
+}
+
+.div-buttons-doneRecipes {
+  margin-left: 1%;
+}
+
+.doneRecipes-div h3 {
+  color: #41197f;
+}
+
+.btn-danger {
+  margin-bottom: 10px;
+}
+
+.favDiv {
+  text-align: center;
+}
+
+.favDiv ul {
+  list-style: none;
+  text-decoration: none;
+}
+
+.favDiv li {
+  margin-left: 4px;
+}
+
+.favDiv p {
+  color: #41197f;
+  text-decoration: none;
+}
+
+.favDiv a {
+  color: #41197f;
+  text-decoration: none;
+}
+
+.favDiv h3 {
+  color: #41197f;
+}
+
+.favButton {
+  background-color: #41197f;
+  border: none;
+  color: #ffc107;
+  font-size: medium;
+  margin: 1%;
+  text-align: center;
+}
+
+.recipesDetails-div {
+  text-align: center;
+}
+
+#img-details {
+  height: 20%;
+  opacity: 0.8;
+  width: 100%;
+}
+
+#title-details {
+  align-items: center;
+  font-size: 40px;
+  margin-left: 2%;
+  text-transform: uppercase;
+  top: 40px;
+}
+
+#category-details {
+  font-size: 20px;
+  left: 0;
+  margin-left: 3%;
+  top: 10px;
+}
+
+.header-details {
+  display: inline-block;
+
+  /* position: relative; */
+}
+
+.header-details figcaption {
+  color: white;
+  display: block;
+  position: absolute;
+  text-align: center;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.466);
+}
+
+.header-details button {
+  display: inline-block;
+  margin-top: -100px;
+  position: relative;
+}
+
+#share-button {
+  height: 42px;
+  margin-left: 80%;
+  margin-right: 10px;
+  margin-top: -43%;
+  width: 60px;
+}
+
+#favorite-button {
+  height: 45px;
+  margin-left: 80%;
+  margin-right: 10px;
+  margin-top: -90%;
+  width: 60px;
+}
+
+.recipeDetails-ingredients {
+  align-self: center;
+  background-color: #ffffff85;
+  border-color: #41197f;
+  border-radius: 3%;
+  border-style: solid;
+  border-width: thin;
+  margin-left: 5%;
+  width: 90%;
+}
+
+.recipesDetailsIngredients-p {
+  text-align: center;
+}
+
+#ingredients-name {
+  color: #41197f;
+  margin-top: -15%;
+  text-align: center;
+}
+
+#instructions-name {
+  color: #41197f;
+  margin-top: 15px;
+  text-align: center;
+}
+
+#RecipeDetails-instructions {
+  margin: 10px;
+  text-align: justify;
+}
+
+#recipeDetails-video {
+  width: 100%;
+}
+
+.start-recipe-btn {
+  background-color: #ffc107 ! important;
+  border: none ! important;
+  bottom: 0;
+  color: white;
+  font-weight: 700;
+  position: fixed;
+  width: 100%;
+}
+
+.recipeDetails-ingredients ul {
+  list-style: none;
+  text-align: justify;
+  text-decoration: none;
+}
+
+.finish-recipe-btn {
+  background-color: #ffc107 ! important;
+  border: none ! important;
+  bottom: 0;
+  color: white;
+  font-weight: 700;
+  position: fixed;
+  width: 100%;
+}
+
+.isCopied {
+  color: #41197f;
+  opacity: 0.8;
+}
+
+#isAlcoholic-details {
+  color: #41197f;
+  text-align: center;
+}

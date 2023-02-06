@@ -33,33 +33,38 @@ function DoneRecipes() {
   };
 
   return (
-    <div>
+    <div className="doneRecipes-div">
       <Header mainPage={ false } title="Done Recipes" />
-      <h4>{isCopied ? 'Link copied!' : ''}</h4>
-      <button
-        type="button"
-        data-testid="filter-by-all-btn"
-        name="All"
-        onClick={ filterByTypeButton }
-      >
-        All
-      </button>
-      <button
-        type="button"
-        data-testid="filter-by-meal-btn"
-        name="meal"
-        onClick={ filterByTypeButton }
-      >
-        Meals
-      </button>
-      <button
-        type="button"
-        data-testid="filter-by-drink-btn"
-        name="drink"
-        onClick={ filterByTypeButton }
-      >
-        Drinks
-      </button>
+      <h3>{isCopied ? 'Link copied!' : ''}</h3>
+      <div className="div-buttons-doneRecipes">
+        <button
+          type="button"
+          data-testid="filter-by-all-btn"
+          name="All"
+          onClick={ filterByTypeButton }
+          className="doneRecipesButton"
+        >
+          All
+        </button>
+        <button
+          type="button"
+          data-testid="filter-by-meal-btn"
+          name="meal"
+          onClick={ filterByTypeButton }
+          className="doneRecipesButton"
+        >
+          Meals
+        </button>
+        <button
+          type="button"
+          data-testid="filter-by-drink-btn"
+          name="drink"
+          onClick={ filterByTypeButton }
+          className="doneRecipesButton"
+        >
+          Drinks
+        </button>
+      </div>
       <br />
       <ul>
         { recipesDone.length > 0
@@ -110,6 +115,7 @@ function DoneRecipes() {
             >
               <img src={ shareIcon } alt="shareIcon" />
             </Button>
+            <br />
           </li>
         ))) }
       </ul>

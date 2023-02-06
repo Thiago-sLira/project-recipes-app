@@ -1,9 +1,10 @@
-import Button from 'react-bootstrap/Button';
+// import Button from 'react-bootstrap/Button';
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import profileIcon from '../images/profileIcon.svg';
-import searchIcon from '../images/searchIcon.svg';
+import profileIcon from '../images/icone-perfil.png';
+import searchIcon from '../images/Vector.png';
 import SearchBar from './SearchBar';
+import logo from '../images/header-logo.png';
 
 function Header({ mainPage, title }) {
   const [showSearchField, setShowSearchField] = useState(false);
@@ -24,29 +25,33 @@ function Header({ mainPage, title }) {
 
   return (
     <div>
-      <h1 data-testid="page-title">
+      <header className="header-bar">
+        <img src={ logo } alt="" className="logo-header" />
+        <p id="p-header">Recipes app</p>
+        <button
+          type="button"
+          data-testid="profile-top-btn"
+          className="profileButton"
+          src={ profileIcon }
+          onClick={ handleProfileClick }
+        >
+          <img src={ profileIcon } alt="profileIcon" />
+        </button>
+        { mainPage && (
+          <button
+            type="button"
+            data-testid="search-top-btn"
+            className="searchButton"
+            src={ searchIcon }
+            onClick={ handleSearchClick }
+          >
+            <img src={ searchIcon } alt="profileIcon" />
+          </button>
+        )}
+      </header>
+      <h1 data-testid="page-title" id="header-title">
         {title }
       </h1>
-      <Button
-        type="button"
-        data-testid="profile-top-btn"
-        className="profileButton"
-        src={ profileIcon }
-        onClick={ handleProfileClick }
-      >
-        <img src={ profileIcon } alt="profileIcon" />
-      </Button>
-      { mainPage && (
-        <Button
-          type="button"
-          data-testid="search-top-btn"
-          className="profileButton"
-          src={ searchIcon }
-          onClick={ handleSearchClick }
-        >
-          <img src={ searchIcon } alt="profileIcon" />
-        </Button>
-      )}
       { showSearchField && (
         <SearchBar />
       )}

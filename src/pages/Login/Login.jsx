@@ -1,7 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import { saveLocalStorage } from '../../localStorage/localStorage';
+import logo from '../../images/logo.png';
 
 const SIX = 6;
 function Login() {
@@ -41,39 +43,49 @@ function Login() {
   }, [loginInputs.email, loginInputs.password]);
 
   return (
-    <div>
-      <form>
-        <h1>LOGIN</h1>
-        <input
-          type="email"
-          name="email"
-          value={ loginInputs.email }
-          id="input-email"
-          data-testid="email-input"
-          placeholder="Email"
-          onChange={ handleChange }
-        />
-        <input
-          type="password"
-          name="password"
-          value={ loginInputs.password }
-          id="input-password"
-          data-testid="password-input"
-          placeholder="Password"
-          onChange={ handleChange }
-        />
-        <button
-          data-testid="login-submit-btn"
-          type="button"
-          disabled={ loginInputs.isDisabled }
-          onClick={ handleClick }
-        >
-          Login
-        </button>
+    <>
+      <header>
+        <img src={ logo } alt="" className="logo-img" />
+      </header>
+      <div className="section-form-login">
+        <form className="section-input-login">
+          <h1 className="title-login">Login</h1>
+          <input
+            type="email"
+            name="email"
+            value={ loginInputs.email }
+            id="input-email"
+            data-testid="email-input"
+            placeholder="Email"
+            onChange={ handleChange }
+          />
+          <br />
+          <input
+            type="password"
+            name="password"
+            value={ loginInputs.password }
+            id="input-password"
+            data-testid="password-input"
+            placeholder="Password"
+            onChange={ handleChange }
+          />
+          <br />
+          <br />
+          <Button
+            data-testid="login-submit-btn"
+            type="button"
+            disabled={ loginInputs.isDisabled }
+            onClick={ handleClick }
+            className="btn-login"
+          >
+            Enter
+          </Button>
 
-      </form>
+        </form>
 
-    </div>
+      </div>
+
+    </>
   );
 }
 

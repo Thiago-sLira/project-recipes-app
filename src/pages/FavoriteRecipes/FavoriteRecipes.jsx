@@ -46,33 +46,38 @@ function FavoriteRecipes() {
   };
 
   return (
-    <div>
+    <div className="favDiv">
       <Header mainPage={ false } title="Favorite Recipes" />
-      <h4>{isCopied ? 'Link copied!' : ''}</h4>
-      <button
-        type="button"
-        data-testid="filter-by-all-btn"
-        name="All"
-        onClick={ filterByTypeButton }
-      >
-        All
-      </button>
-      <button
-        type="button"
-        data-testid="filter-by-meal-btn"
-        name="meal"
-        onClick={ filterByTypeButton }
-      >
-        Meals
-      </button>
-      <button
-        type="button"
-        data-testid="filter-by-drink-btn"
-        name="drink"
-        onClick={ filterByTypeButton }
-      >
-        Drinks
-      </button>
+      <h3>{isCopied ? 'Link copied!' : ''}</h3>
+      <div className="favButtons">
+        <button
+          type="button"
+          data-testid="filter-by-all-btn"
+          name="All"
+          onClick={ filterByTypeButton }
+          className="favButton"
+        >
+          All
+        </button>
+        <button
+          type="button"
+          data-testid="filter-by-meal-btn"
+          name="meal"
+          onClick={ filterByTypeButton }
+          className="favButton"
+        >
+          Meals
+        </button>
+        <button
+          type="button"
+          data-testid="filter-by-drink-btn"
+          name="drink"
+          onClick={ filterByTypeButton }
+          className="favButton"
+        >
+          Drinks
+        </button>
+      </div>
       <br />
       <ul>
         { favoriteRecipes.length > 0

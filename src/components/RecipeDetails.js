@@ -115,72 +115,74 @@ function RecipeDetails() {
   };
 
   return (
-    <div>
+    <div className="recipeDetails-div">
       {resultApiId.length > 0 && (
         <div>
-          <img
-            src={ resultApiId[0].strMealThumb
-              ? resultApiId[0].strMealThumb : resultApiId[0].strDrinkThumb }
-            data-testid="recipe-photo"
-            alt="meal"
-            width="200px"
-          />
-          <h1 data-testid="recipe-title">
-            {
-              (resultApiId[0].strMeal ? resultApiId[0].strMeal : resultApiId[0].strDrink)
-            }
-          </h1>
-          <h2 data-testid="recipe-category">
-            { resultApiId[0].strCategory}
-          </h2>
-          <h2 data-testid="recipe-category">
-            { resultApiId[0].strAlcoholic }
-          </h2>
-          <Button
-            type="button"
-            data-testid="share-btn"
-            className="btn btn-danger"
-            src={ shareIcon }
-            onClick={ shareButtonClick }
-          >
-            <img src={ shareIcon } alt="shareIcon" />
-          </Button>
-          <h1>{isCopied}</h1>
-          <Button
-            type="button"
-            data-testid="favorite-btn"
-            className="btn btn-danger"
-            src={ isClicked ? blackHeartIcon : whiteHeartIcon }
-            onClick={ favoriteButtonClick }
-          >
+          <figure className="header-details">
             <img
-              src={ isClicked ? blackHeartIcon : whiteHeartIcon }
-              alt="favoriteIcon"
+              src={ resultApiId[0].strMealThumb
+                ? resultApiId[0].strMealThumb : resultApiId[0].strDrinkThumb }
+              data-testid="recipe-photo"
+              alt="meal"
+              // width="200px"
+              id="img-details"
             />
-          </Button>
-          {ingredientsValid.length > 0 && (
-            ingredientsValid.map((ingredient, index) => (
-              <p
-                data-testid={ `${index}-ingredient-name-and-measure` }
-                key={ index }
-              >
-                { `${ingredient.ingredient} 
+            <figcaption data-testid="recipe-title" id="title-details">
+              {
+                (resultApiId[0].strMeal ? resultApiId[0].strMeal
+                  : resultApiId[0].strDrink)
+              }
+            </figcaption>
+            <figcaption data-testid="recipe-category" id="category-details">
+              { resultApiId[0].strCategory}
+            </figcaption>
+            <h3 data-testid="recipe-category" id="isAlcoholic-details">
+              { resultApiId[0].strAlcoholic }
+            </h3>
+            <Button
+              type="button"
+              data-testid="share-btn"
+              className="btn btn-danger"
+              id="share-button"
+              src={ shareIcon }
+              onClick={ shareButtonClick }
+            >
+              <img src={ shareIcon } alt="shareIcon" />
+            </Button>
+            <h2 className="isCopied">{isCopied}</h2>
+            <Button
+              type="button"
+              data-testid="favorite-btn"
+              className="btn btn-danger"
+              id="favorite-button"
+              src={ isClicked ? blackHeartIcon : whiteHeartIcon }
+              onClick={ favoriteButtonClick }
+            >
+              <img
+                src={ isClicked ? blackHeartIcon : whiteHeartIcon }
+                alt="favoriteIcon"
+              />
+            </Button>
+          </figure>
+          <h1 id="ingredients-name">Ingredients</h1>
+          <div className="recipeDetails-ingredients">
+            {ingredientsValid.length > 0 && (
+              ingredientsValid.map((ingredient, index) => (
+                <p
+                  data-testid={ `${index}-ingredient-name-and-measure` }
+                  key={ index }
+                  className="recipesDetailsIngredients-p"
+                >
+                  { `${ingredient.ingredient} 
                 ${ingredient.measure}` }
-              </p>
-            ))
-          )}
-          <p data-testid="instructions">
+                </p>
+              ))
+            )}
+          </div>
+          <h1 id="instructions-name">Instructions</h1>
+          <p data-testid="instructions" id="RecipeDetails-instructions">
             {resultApiId[0].strInstructions}
           </p>
-          <iframe
-            width="500"
-            height="350"
-            data-testid="video"
-            src={ resultApiId[0].strYoutube
-               && resultApiId[0].strYoutube.replace('watch?v=', 'embed/') }
-            allow="autoplay"
-            title="Receita"
-          />
           {recipeDone && (
             <Button
               type="button"
@@ -191,10 +193,22 @@ function RecipeDetails() {
               {recipeInProgress ? 'Continue Recipe' : 'Start Recipe'}
             </Button>
           )}
+          {resultApiId[0].strMeal && (
+            <iframe
+              width="500"
+              height="350"
+              data-testid="video"
+              src={ resultApiId[0].strYoutube
+                && resultApiId[0].strYoutube.replace('watch?v=', 'embed/') }
+              allow="autoplay"
+              title="Receita"
+              id="recipeDetails-video"
+            />
+          )}
         </div>
       )}
       <section>
-        <h2>Recomendations</h2>
+        <h2 id="instructions-name">Recomendations</h2>
         { recomendations.length > 0 && (
           <div className="container">
             {
@@ -207,6 +221,7 @@ function RecipeDetails() {
                     ? '/drinks' : '/meals' }
                   id={ (recipe.idMeal ? recipe.idMeal : recipe.idDrink) }
                   width="150px"
+                  className="recomended-recipe"
                 />
               ))
             }

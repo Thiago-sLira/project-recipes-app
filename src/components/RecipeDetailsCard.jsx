@@ -129,59 +129,61 @@ function RecipeDetailsCard() {
   }, [resultApiId, ingredientsValidArray]);
 
   return (
-    <div>
+    <div className="recipeDetails-div">
       {resultApiId.length > 0 && (
         <div>
-          <img
-            src={ resultApiId[0].strMealThumb
-              ? resultApiId[0].strMealThumb : resultApiId[0].strDrinkThumb }
-            data-testid="recipe-photo"
-            alt="meal"
-            width="200px"
-          />
-          <h1 data-testid="recipe-title">
-            {
-              (resultApiId[0].strMeal ? resultApiId[0].strMeal : resultApiId[0].strDrink)
-            }
-          </h1>
-          <Button
-            type="button"
-            data-testid="share-btn"
-            className="btn btn-danger"
-            src={ shareIcon }
-            onClick={ shareButtonClick }
-          >
-            <img src={ shareIcon } alt="shareIcon" />
-          </Button>
-          <h1>{isCopied}</h1>
-          <Button
-            type="button"
-            data-testid="favorite-btn"
-            className="btn btn-danger"
-            src={ isClicked ? blackHeartIcon : whiteHeartIcon }
-            onClick={ favoriteButtonClick }
-          >
+          <figure className="header-details">
             <img
-              src={ isClicked ? blackHeartIcon : whiteHeartIcon }
-              alt="favoriteIcon"
+              src={ resultApiId[0].strMealThumb
+                ? resultApiId[0].strMealThumb : resultApiId[0].strDrinkThumb }
+              data-testid="recipe-photo"
+              alt="meal"
+              width="200px"
+              id="img-details"
             />
-          </Button>
-          <h2 data-testid="recipe-category">
-            { resultApiId[0].strCategory}
-          </h2>
-          <h2 data-testid="recipe-category">
-            { resultApiId[0].strAlcoholic }
-          </h2>
-          <ul>
-            {ingredientsValid.length > 0 && (
-              ingredientsValid.map((ingredient, index) => (
-                <li key={ index }>
-                  <label
-                    htmlFor={ `ingredient-${index}` }
-                    data-testid={ `${index}-ingredient-step` }
-                    className={ checkbox[index + 1] ? 'ingredientUsed' : '' }
-                  >
-                    { `${ingredient.ingredient} ${ingredient.measure}` }
+            <figcaption data-testid="recipe-title" id="title-details">
+              {
+                (resultApiId[0].strMeal ? resultApiId[0].strMeal
+                  : resultApiId[0].strDrink)
+              }
+            </figcaption>
+            <figcaption data-testid="recipe-category" id="category-details">
+              { resultApiId[0].strCategory}
+            </figcaption>
+            <h3 data-testid="recipe-category" id="isAlcoholic-details">
+              { resultApiId[0].strAlcoholic }
+            </h3>
+            <Button
+              type="button"
+              data-testid="share-btn"
+              className="btn btn-danger"
+              src={ shareIcon }
+              id="share-button"
+              onClick={ shareButtonClick }
+            >
+              <img src={ shareIcon } alt="shareIcon" />
+            </Button>
+            <h1>{isCopied}</h1>
+            <Button
+              type="button"
+              data-testid="favorite-btn"
+              className="btn btn-danger"
+              src={ isClicked ? blackHeartIcon : whiteHeartIcon }
+              onClick={ favoriteButtonClick }
+              id="favorite-button"
+            >
+              <img
+                src={ isClicked ? blackHeartIcon : whiteHeartIcon }
+                alt="favoriteIcon"
+              />
+            </Button>
+          </figure>
+          <h1 id="ingredients-name">Ingredients</h1>
+          <div className="recipeDetails-ingredients">
+            <ul>
+              {ingredientsValid.length > 0 && (
+                ingredientsValid.map((ingredient, index) => (
+                  <li key={ index }>
                     <input
                       name={ index + 1 }
                       type="checkbox"
@@ -190,13 +192,21 @@ function RecipeDetailsCard() {
                       checked={ checkbox[index + 1] }
                       value={ checkbox[index + 1] }
                     />
-                  </label>
-                </li>
-              ))
-            )}
-          </ul>
+                    <label
+                      htmlFor={ `ingredient-${index}` }
+                      data-testid={ `${index}-ingredient-step` }
+                      className={ checkbox[index + 1] ? 'ingredientUsed' : '' }
+                    >
+                      { ` ${ingredient.ingredient} ${ingredient.measure}` }
+                    </label>
+                  </li>
+                ))
+              )}
+            </ul>
+          </div>
           <br />
-          <p data-testid="instructions">
+          <h1 id="instructions-name">Instructions</h1>
+          <p data-testid="instructions" id="RecipeDetails-instructions">
             {resultApiId[0].strInstructions}
           </p>
           <Button

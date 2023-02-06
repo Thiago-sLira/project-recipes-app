@@ -36,6 +36,7 @@ function Filter() {
           type="button"
           key={ strCategory }
           data-testid={ `${strCategory}-category-filter` }
+          className="button-category"
           onClick={ () => filterByCategory(strCategory, history.location.pathname) }
         >
           { strCategory }
@@ -44,6 +45,7 @@ function Filter() {
       <button
         type="button"
         data-testid="All-category-filter"
+        className="button-all-category"
         onClick={ () => handleAllRecipes(history.location.pathname) }
       >
         All

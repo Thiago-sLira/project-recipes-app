@@ -39,7 +39,7 @@ function SearchBar() {
 
   return (
 
-    <div>
+    <div className="searchBar">
       <section>
         <label htmlFor="input-search">
           <input
@@ -85,11 +85,13 @@ function SearchBar() {
             />
           </label>
         </label>
+        <br />
         <button
           type="button"
           data-testid="exec-search-btn"
           onClick={ handleSearchClick }
           disabled={ isButtonDisabled }
+          id="searchButton"
         >
           Search
         </button>

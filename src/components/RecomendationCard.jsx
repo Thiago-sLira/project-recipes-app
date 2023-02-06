@@ -9,14 +9,16 @@ function RecomendationCard({ recipe, index, pathname, id, width }) {
     >
       <Link
         to={ `${pathname}/${id}` }
+        id="recomended-link"
       >
         <img
           src={ (recipe.strMealThumb ? recipe.strMealThumb : recipe.strDrinkThumb) }
           //   data-testid={ `${index}-card-img` }
           alt="meal"
           width={ width }
+          className="recomendation-image"
         />
-        <p data-testid={ `${index}-recommendation-title` }>
+        <p data-testid={ `${index}-recommendation-title` } id="recomended-title">
           {
             (recipe.strMeal ? recipe.strMeal : recipe.strDrink)
           }
